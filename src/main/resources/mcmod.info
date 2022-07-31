@@ -1,0 +1,16 @@
+[
+{
+  "modid": "skyhead",
+  "name": "SkyHead",
+  "description": "A mod to display Skywars Levels",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Wispy"],
+  "credits": "Wispy for creating this mod",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
