@@ -70,9 +70,9 @@ public class API {
     	    		} else if (response.getStatusLine().getStatusCode() == 403 && SkyHead.enabled) { // if unsuccessful invalid api key
     	    			Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Invalid API Key, Please Set a Correct Key"));
 	                	SkyHead.enabled = false;
-	                	return "";
+	                	return " §fbadkey";
     	    		} else if (response.getStatusLine().getStatusCode() == 403) {
-    	    			return "";
+    	    			return " §fbadkey";
     	    		}
                 }
         	} finally {

@@ -20,7 +20,7 @@ public class Cache {
 	public static boolean inCache(String player) { // check if a player is in the cache
 		for (String key : playerCache.keySet()) {
 			if (key.equals(player)) {
-				if (playerCache.get(key).equals("§fLimit")) return false; // if a level wasn't grabbed before try and get it again
+				if (playerCache.get(key).equals(" §fLimit") || playerCache.get(key).equals(" §fbadkey")) return false; // if a level wasn't grabbed before try and get it again
 				return true;
 			}
 		}
