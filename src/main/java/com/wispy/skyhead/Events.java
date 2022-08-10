@@ -9,13 +9,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class Events {
 	
-	private API api = new API();
-
     @SubscribeEvent
     public void onPlayerJoin(EntityJoinWorldEvent event) {
         Minecraft mc = Minecraft.getMinecraft(); // get minecraft

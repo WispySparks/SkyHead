@@ -1,8 +1,5 @@
 package com.wispy.skyhead.api;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ChatComponentText;
-
 public class APILimiter {
 	
 	public static int requests = 0;

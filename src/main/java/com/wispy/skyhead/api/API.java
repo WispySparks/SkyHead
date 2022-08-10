@@ -14,9 +14,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.wispy.skyhead.SkyHead;
+import com.wispy.skyhead.util.Text;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ChatComponentText;
 
 public class API {
 
@@ -62,13 +62,22 @@ public class API {
     	    			JsonElement jelement = new JsonParser().parse(json);
     	                JsonObject  jsonObject = jelement.getAsJsonObject();
     	                if (!jsonObject.get("player").isJsonNull()) {
-    	                	if (jsonObject.get("player").getAsJsonObject().get("stats").getAsJsonObject().get("SkyWars").isJsonNull() || jsonObject.get("player").getAsJsonObject().get("stats").getAsJsonObject().get("SkyWars").getAsJsonObject().get("levelFormatted").isJsonNull()) {
-    	                    	return " §71⋆";
+    	                	switch (SkyHead.mode) { // get level for current mode
+    	                	case 0: // skywars
+    	                		if (jsonObject.get("player").getAsJsonObject().get("stats").getAsJsonObject().get("SkyWars").isJsonNull() || jsonObject.get("player").getAsJsonObject().get("stats").getAsJsonObject().get("SkyWars").getAsJsonObject().get("levelFormatted").isJsonNull()) {
+        	                    	return " §71⋆"; // lowest level
+        	                	}
+        	            		return " " + jsonObject.get("player").getAsJsonObject().get("stats").getAsJsonObject().get("SkyWars").getAsJsonObject().get("levelFormatted").getAsString();
+    	                	case 1: // bedwars
+    	                		if (jsonObject.get("player").getAsJsonObject().get("achievements").isJsonNull() || jsonObject.get("player").getAsJsonObject().get("achievements").getAsJsonObject().get("bedwars_level").isJsonNull()) {
+        	                    	return " §71✫"; //lowest level
+        	                	}
+    	                		String level = jsonObject.get("player").getAsJsonObject().get("achievements").getAsJsonObject().get("bedwars_level").getAsString();
+    	                		return " " + getColor(level) + level.trim() + "✫";
     	                	}
-    	            		return " " + jsonObject.get("player").getAsJsonObject().get("stats").getAsJsonObject().get("SkyWars").getAsJsonObject().get("levelFormatted").getAsString();
     	                }
     	    		} else if (response.getStatusLine().getStatusCode() == 403 && SkyHead.enabled) { // if unsuccessful invalid api key
-    	    			Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Invalid API Key, Please Set a Correct Key"));
+    	    			Minecraft.getMinecraft().thePlayer.addChatMessage(Text.ChatText("Invalid API Key, Please Set a Correct Key", "§6"));
 	                	SkyHead.enabled = false;
 	                	return " §fbadkey";
     	    		} else if (response.getStatusLine().getStatusCode() == 403) {
@@ -81,6 +90,21 @@ public class API {
             return " §fLimit"; // hit the request limit
         }
         return ""; // no player found in hypixel api
+    }
+    
+    private static String getColor(String level) { // get the correct bedwars color for that level
+    	int levelNum = Integer.parseInt(level);
+    	if (levelNum < 100) return "§7";
+    	if (levelNum < 200) return "§f";
+    	if (levelNum < 300) return "§6";
+    	if (levelNum < 400) return "§b";
+    	if (levelNum < 500) return "§2";
+    	if (levelNum < 600) return "§3";
+    	if (levelNum < 700) return "§4";
+    	if (levelNum < 800) return "§d";
+    	if (levelNum < 900) return "§9";
+    	if (levelNum < 1000) return "§5";
+    	return "§c"; // place holder for rainbow
     }
 
 }

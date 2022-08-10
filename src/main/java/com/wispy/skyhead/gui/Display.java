@@ -1,14 +1,8 @@
 package com.wispy.skyhead.gui;
 
-import java.util.HashMap;
-import java.util.List;
-
 import com.wispy.skyhead.Cache;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
 
 public class Display {
 	
@@ -18,11 +12,26 @@ public class Display {
     	Cache.addPlayer(player.getName(), level);
     	currentLevel = level;
     	player.refreshDisplayName(); // call name format event
+//    	NetworkPlayerInfo info = Minecraft.getMinecraft().getNetHandler().getPlayerInfo(player.getUniqueID()); // get player tab name stuff
+//    	if (info.getDisplayName() == null) { // if no current display name set it to players name plus level
+////    		info.setDisplayName(new ChatComponentText(player.getName() + " " + level));
+//    	}
+//    	else { // otherwise set it to their display name plus level
+//    		info.setDisplayName(info.getDisplayName().appendText(" " + level));
+//    	}
     }
     
     public static void oldTag(EntityPlayer player) { // get player from cache and set level
     	currentLevel = Cache.queryCache(player.getName());
+    	String level = currentLevel;
     	player.refreshDisplayName(); // call name format event
+//    	NetworkPlayerInfo info = Minecraft.getMinecraft().getNetHandler().getPlayerInfo(player.getUniqueID()); // get player tab name stuff
+//    	if (info.getDisplayName() == null) { // if no current display name set it to players name plus level
+////    		info.setDisplayName(new ChatComponentText(player.getName() + " " + level));
+//    	}
+//    	else if (!info.getDisplayName().toString().contains(level)) { // otherwise set it to their display name plus level
+//    		info.setDisplayName(info.getDisplayName().appendText(" " + level));
+//    	}
     }
 
 }

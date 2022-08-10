@@ -18,10 +18,12 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid = SkyHead.modID, version = SkyHead.version)
 public class SkyHead
 {
+	
     public static final String modID = "skyhead";
     public static final String version = "1.0";
     public static Configuration config;
-    public static boolean enabled;
+    public static boolean enabled; // on/off
+    public static int mode; // which game level to retrieve
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -30,13 +32,14 @@ public class SkyHead
     	config.load();
     	Property propB = config.get(config.CATEGORY_CLIENT, "enabled", true); // get enabled property from config file
     	enabled = propB.getBoolean();
-    	Property propS = config.get(config.CATEGORY_CLIENT, "apiKey", "");
+    	Property propS = config.get(config.CATEGORY_CLIENT, "apiKey", ""); // get api key from config
     	API.apikey = propS.getString();
-    	
+    	Property propM = config.get(config.CATEGORY_CLIENT, "mode", 0); // 0 = skywars, 1 = bedwars
+    	mode = propM.getInt();
     }
     
     @EventHandler
-    public void init(FMLInitializationEvent event)
+    public void init(FMLInitializationEvent event) // register my mod stuff
     {
     	ClientCommandHandler.instance.registerCommand(new SkyheadCommands());
     	MinecraftForge.EVENT_BUS.register(new Events());
