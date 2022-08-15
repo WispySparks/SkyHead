@@ -20,7 +20,7 @@ public class SkyHead
 {
 	
     public static final String modID = "skyhead";
-    public static final String version = "1.0";
+    public static final String version = "LOCAL";
     public static Configuration config;
     public static boolean enabled; // on/off
     public static int mode; // which game level to retrieve
