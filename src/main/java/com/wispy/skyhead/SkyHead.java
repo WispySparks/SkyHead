@@ -30,11 +30,11 @@ public class SkyHead
     	File configFile = new File(Loader.instance().getConfigDir(), "SkyHead.cfg");
     	config = new Configuration(configFile);
     	config.load();
-    	Property propB = config.get(config.CATEGORY_CLIENT, "enabled", true); // get enabled property from config file
+    	Property propB = config.get(Configuration.CATEGORY_CLIENT, "enabled", true); // get enabled property from config file
     	enabled = propB.getBoolean();
-    	Property propS = config.get(config.CATEGORY_CLIENT, "apiKey", ""); // get api key from config
+    	Property propS = config.get(Configuration.CATEGORY_CLIENT, "apiKey", ""); // get api key from config
     	API.apikey = propS.getString();
-    	Property propM = config.get(config.CATEGORY_CLIENT, "mode", 0); // 0 = skywars, 1 = bedwars
+    	Property propM = config.get(Configuration.CATEGORY_CLIENT, "mode", 0); // 0 = skywars, 1 = bedwars
     	mode = propM.getInt();
     }
     

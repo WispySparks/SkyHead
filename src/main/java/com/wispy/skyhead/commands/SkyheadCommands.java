@@ -16,15 +16,15 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
 public class SkyheadCommands extends CommandBase {
 	
-	private final List aliases;
+	private final List<String> aliases = new ArrayList<String>(); 
 	private final String options = "<on:off:sw:bw:key:requests:size>";
 	
 	public SkyheadCommands() { // make sh also a valid command
-		aliases = new ArrayList(); 
         aliases.add("sh"); 
 	}
 
@@ -39,7 +39,7 @@ public class SkyheadCommands extends CommandBase {
 	}
 	
 	@Override 
-    public List getCommandAliases() {
+    public List<String> getCommandAliases() {
 		return this.aliases;
 	}
 	
@@ -54,14 +54,14 @@ public class SkyheadCommands extends CommandBase {
 		Minecraft mc = Minecraft.getMinecraft();
 		if (args.length > 0) {
 			if (args[0].equals("on")) { // turn mod on
-				Property prop = SkyHead.config.get(SkyHead.config.CATEGORY_CLIENT, "enabled", true); // get config property and set it so that it persists between launches
+				Property prop = SkyHead.config.get(Configuration.CATEGORY_CLIENT, "enabled", true); // get config property and set it so that it persists between launches
 				prop.setValue(true); 
 				SkyHead.config.save();
 				SkyHead.enabled = true;
 				mc.thePlayer.addChatMessage(Text.ChatText("Skyhead ON", "§a"));
 			}
 			else if (args[0].equals("off")) { // turn mod off
-				Property prop = SkyHead.config.get(SkyHead.config.CATEGORY_CLIENT, "enabled", true); // get config property and set it so that it persists between launches
+				Property prop = SkyHead.config.get(Configuration.CATEGORY_CLIENT, "enabled", true); // get config property and set it so that it persists between launches
 				prop.setValue(false);
 				SkyHead.config.save();
 				SkyHead.enabled = false;
@@ -78,7 +78,7 @@ public class SkyheadCommands extends CommandBase {
 				mc.thePlayer.addChatMessage(Text.ChatText("Player Cache Size: " + Cache.getSize(), "§6"));
 			}
 			else if (args[0].equals("sw")) { // set mod mode to skywars levels
-				Property prop = SkyHead.config.get(SkyHead.config.CATEGORY_CLIENT, "mode", 0);
+				Property prop = SkyHead.config.get(Configuration.CATEGORY_CLIENT, "mode", 0);
 				prop.setValue(0);
 				SkyHead.config.save();
 				SkyHead.mode = 0; // set mode in config and current instance
@@ -89,7 +89,7 @@ public class SkyheadCommands extends CommandBase {
 				mc.thePlayer.addChatMessage(Text.ChatText("Set to Skywars Mode", "§6"));
 			}
 			else if (args[0].equals("bw")) { // set mod mode to bedwars levels
-				Property prop = SkyHead.config.get(SkyHead.config.CATEGORY_CLIENT, "mode", 0);
+				Property prop = SkyHead.config.get(Configuration.CATEGORY_CLIENT, "mode", 0);
 				prop.setValue(1);
 				SkyHead.config.save();
 				SkyHead.mode = 1;  // set mode in config and current instance
@@ -101,7 +101,7 @@ public class SkyheadCommands extends CommandBase {
 			}
 			else if (args[0].equals("key")) {
 				if (args.length > 1) {
-					Property prop = SkyHead.config.get(SkyHead.config.CATEGORY_CLIENT, "apiKey", ""); // get config property and set it so that it persists between launches
+					Property prop = SkyHead.config.get(Configuration.CATEGORY_CLIENT, "apiKey", ""); // get config property and set it so that it persists between launches
 					prop.setValue(args[1]);  // set key in config and in code
 					SkyHead.config.save();
 					API.apikey = args[1];
