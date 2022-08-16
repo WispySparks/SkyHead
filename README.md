@@ -1,5 +1,7 @@
 # SkyHead
 ## General
+![](https://img.shields.io/github/downloads/WispySparks/SkyHead/total?color=green&label=Downloads)
+
 This is a 1.8.9 Minecraft Mod used to display Skywars (and Bedwars) Levels on Hypixel, to get started just put it in your mods folder and use the command
 `/skyhead key <apikeyhere>` and it should start working. 
 You can get your apikey on hypixel by doing the command, `/api`.
