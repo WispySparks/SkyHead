@@ -3,22 +3,21 @@ package com.wispy.skyhead.util;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
-
+/**
+ * Utility class used for creating ChatComponents with a color style added.
+ */
 public class Text {
 	
 	public static ChatComponentText ChatText(String text, String colorCode) { // simplified code to create a colored chat component
+		EnumChatFormatting color = getColor(colorCode);
 		ChatComponentText chatText = new ChatComponentText(text);
 		ChatStyle cs = new ChatStyle();
-		EnumChatFormatting color = EnumChatFormatting.WHITE;
-		if (colorCode != null) {
-			color = getColor(colorCode);
-		}
 		cs.setColor(color);
 		chatText.setChatStyle(cs);
 		return chatText;
 	}
 	
-	private static EnumChatFormatting getColor(String color) {
+	private static EnumChatFormatting getColor(String color) { // function to get a chat formatted color from a color code
 		if (color == "§0") {
 			return EnumChatFormatting.BLACK;
 		}

@@ -14,24 +14,29 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-
-@Mod(modid = SkyHead.modID, version = SkyHead.version)
+/**
+ * Main mod class where the startup events are fired.
+ */
+@Mod(modid = SkyHead.modID, version = SkyHead.version, clientSideOnly = true)
 public class SkyHead
 {
 	
     public static final String modID = "skyhead";
     public static final String version = "LOCAL";
-    public static Configuration config;
-    public static boolean enabled; // on/off
+    public static Configuration config; // config
+    public static boolean enabled; // mod on/off
+    public static boolean tabEnabled; // whether tab mode is on or off
     public static int mode; // which game level to retrieve
     
     @EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
+    public void preInit(FMLPreInitializationEvent event) { // get config file and set all mod wide variables from the config
     	File configFile = new File(Loader.instance().getConfigDir(), "SkyHead.cfg");
     	config = new Configuration(configFile);
     	config.load();
     	Property propB = config.get(Configuration.CATEGORY_CLIENT, "enabled", true); // get enabled property from config file
     	enabled = propB.getBoolean();
+    	Property propT = config.get(Configuration.CATEGORY_CLIENT, "tabEnabled", false); // if tab is enabled from config
+    	tabEnabled = propT.getBoolean();
     	Property propS = config.get(Configuration.CATEGORY_CLIENT, "apiKey", ""); // get api key from config
     	API.apikey = propS.getString();
     	Property propM = config.get(Configuration.CATEGORY_CLIENT, "mode", 0); // 0 = skywars, 1 = bedwars
@@ -41,9 +46,9 @@ public class SkyHead
     @EventHandler
     public void init(FMLInitializationEvent event) // register my mod stuff
     {
-    	ClientCommandHandler.instance.registerCommand(new SkyheadCommands());
-    	MinecraftForge.EVENT_BUS.register(new Events());
-        MinecraftForge.EVENT_BUS.register(this);
+    	ClientCommandHandler.instance.registerCommand(new SkyheadCommands()); // register commands
+    	MinecraftForge.EVENT_BUS.register(new Events()); // register events handler
+        MinecraftForge.EVENT_BUS.register(this); // register my mod
     }
     
 }

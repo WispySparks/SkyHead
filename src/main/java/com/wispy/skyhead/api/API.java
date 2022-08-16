@@ -17,38 +17,20 @@ import com.wispy.skyhead.SkyHead;
 import com.wispy.skyhead.util.Text;
 
 import net.minecraft.client.Minecraft;
-
+/** 
+ * Class used to interact with the Hypixel API and retrieve the preferred data for use.
+ */ 
 public class API {
 
     public static String apikey = ""; // api key
     private static Lock lock = new ReentrantLock();
 
-    private static String getUUID(String name) { // get the uuid from a players username
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpResponse response;
-        String json = null;
-		try {
-			HttpGet request = new HttpGet("https://playerdb.co/api/player/minecraft/" + name); // make a get request to the api
-			response = client.execute(request);
-	        json = new BasicResponseHandler().handleResponse(response);
-		} catch (Exception e) {} 
-		if (json != null) { // parse the json and grab the raw id 
-			JsonElement jelement = new JsonParser().parse(json);
-	        JsonObject  jsonObject = jelement.getAsJsonObject();
-	        if (!jsonObject.get("data").getAsJsonObject().get("player").isJsonNull()) {
-	            return jsonObject.get("data").getAsJsonObject().get("player").getAsJsonObject().get("raw_id").getAsString();
-	        }
-		}
-        return null;
-    }
-    
-    public static String getLevel(String name) { // get a player's skywars level using their uuid and the hypixel api
-        String uuid = getUUID(name);
-        if (uuid != null && !API.apikey.equals("")) {
-        	HttpClient client = HttpClientBuilder.create().build();
+    public static String getLevel(String uuid) { // get a player's skywars level using their uuid and the hypixel api
+        if (!API.apikey.equals("")) {
+        	HttpClient client = HttpClientBuilder.create().build(); // http request stuff
             HttpResponse response = null;
             String json = null;
-        	lock.lock();
+        	lock.lock(); // lock so the APILimiter doesn't get confused
         	try {
         		if (APILimiter.requests < 110) { // make sure not over the 120 requests per minute limit
         			APILimiter.requests += 1;
@@ -61,35 +43,36 @@ public class API {
     	    		if (json != null) { // parse the json and grab the player's level or do level 1 if nothing is there
     	    			JsonElement jelement = new JsonParser().parse(json);
     	                JsonObject  jsonObject = jelement.getAsJsonObject();
-    	                if (!jsonObject.get("player").isJsonNull()) {
+    	                if (!jsonObject.get("player").isJsonNull()) { // check if there is a player
     	                	switch (SkyHead.mode) { // get level for current mode
     	                	case 0: // skywars
     	                		if (jsonObject.get("player").getAsJsonObject().get("stats").getAsJsonObject().get("SkyWars").isJsonNull() || jsonObject.get("player").getAsJsonObject().get("stats").getAsJsonObject().get("SkyWars").getAsJsonObject().get("levelFormatted").isJsonNull()) {
         	                    	return " §71⋆"; // lowest level
         	                	}
-        	            		return " " + jsonObject.get("player").getAsJsonObject().get("stats").getAsJsonObject().get("SkyWars").getAsJsonObject().get("levelFormatted").getAsString();
+        	            		return " " + jsonObject.get("player").getAsJsonObject().get("stats").getAsJsonObject().get("SkyWars").getAsJsonObject().get("levelFormatted").getAsString(); // level from api
     	                	case 1: // bedwars
     	                		if (jsonObject.get("player").getAsJsonObject().get("achievements").isJsonNull() || jsonObject.get("player").getAsJsonObject().get("achievements").getAsJsonObject().get("bedwars_level").isJsonNull()) {
         	                    	return " §71✫"; //lowest level
         	                	}
     	                		String level = jsonObject.get("player").getAsJsonObject().get("achievements").getAsJsonObject().get("bedwars_level").getAsString();
-    	                		return " " + getColor(level) + level.trim() + "✫";
+    	                		return " " + getColor(level) + level.trim() + "✫"; // level from api
     	                	}
     	                }
     	    		} else if (response.getStatusLine().getStatusCode() == 403 && SkyHead.enabled) { // if unsuccessful invalid api key
     	    			Minecraft.getMinecraft().thePlayer.addChatMessage(Text.ChatText("Invalid API Key, Please Set a Correct Key", "§6"));
 	                	SkyHead.enabled = false;
 	                	return " §fbadkey";
-    	    		} else if (response.getStatusLine().getStatusCode() == 403) {
+    	    		} else if (response.getStatusLine().getStatusCode() == 403) {  // if unsuccessful invalid api key
     	    			return " §fbadkey";
     	    		}
+	                return ""; // no player found in hypixel api
                 }
         	} finally {
         		lock.unlock();
         	}
             return " §fLimit"; // hit the request limit
         }
-        return ""; // no player found in hypixel api
+        return ""; // no key
     }
     
     private static String getColor(String level) { // get the correct bedwars color for that level

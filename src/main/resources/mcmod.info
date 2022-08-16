@@ -5,10 +5,10 @@
   "description": "A mod to display Skywars Levels",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
-  "updateUrl": "",
+  "url": "https://github.com/WispySparks/SkyHead",
+  "updateUrl": "https://github.com/WispySparks/SkyHead",
   "authorList": ["Wispy"],
-  "credits": "Wispy for creating this mod",
+  "credits": "HypixelAPI",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
