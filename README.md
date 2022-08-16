@@ -1,4 +1,4 @@
-# SkyHeadMod
+# SkyHead
 ## General
 This is a 1.8.9 Minecraft Mod used to display Skywars (and Bedwars) Levels on Hypixel, to get started just put it in your mods folder and use the command
 `/skyhead key <apikeyhere>` and it should start working. 
