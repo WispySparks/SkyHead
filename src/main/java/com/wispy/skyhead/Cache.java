@@ -1,13 +1,13 @@
 package com.wispy.skyhead;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 /**
  * Class used for storing hashmaps of players and levels with functionality for those hashmaps.
  */
 public class Cache { // stores the levels of bedwars and skywars at the same time and the functions change based on the mode
 	
-	private static HashMap<String, String> playerCacheSW = new HashMap<String, String>(); // Skywars level cache
-	private static HashMap<String, String> playerCacheBW = new HashMap<String, String>(); // Bedwars level cache
+	private static ConcurrentHashMap<String, String> playerCacheSW = new ConcurrentHashMap<String, String>(); // Skywars level cache
+	private static ConcurrentHashMap<String, String> playerCacheBW = new ConcurrentHashMap<String, String>(); // Bedwars level cache
 	
 	public static void addPlayer(String player, String level) { // add player to cache
 		switch (SkyHead.mode) {
