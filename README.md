@@ -10,6 +10,7 @@ If it says "Limit" next to a players name that means you have hit the limit of r
 This was built off of the recommended forge build for 1.8.9 and this mod is use at your own risk as all mods are on hypixel.
 I am not responsible for any harm that may come to you or false bans that could potentially happen.
 ## Commands
+- `/sh` - Displays information on whether the mod is off or on and what mode you're in.
 - `/sh on` - Turns the mod on.
 - `/sh off` - Turns the mod off.
 - `/sh tab` - Toggles tab levels on and off.
