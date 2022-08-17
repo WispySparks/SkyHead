@@ -30,3 +30,5 @@ In general it should work but spamming the command can cause issues sometimes as
 ![2022-08-16_16 33 01](https://user-images.githubusercontent.com/101812473/184989357-a69d7943-fbae-43c8-b1bb-7984da337177.png)
 ## Build Source
 If you want to build the jar from source all you have to do is clone the repo and run ./gradlew build in the top directory of the mod. You will need JDK 8 for this to work.
+## Contributing
+Please don't hesitate to open any issues if you come across any problems or bugs in the mod. Any suggestions to the mod are also welcome.
