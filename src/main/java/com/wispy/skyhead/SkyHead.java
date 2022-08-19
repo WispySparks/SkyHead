@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 /**
  * Main mod class where the startup events are fired.
  */
-@Mod(modid = SkyHead.modID, version = SkyHead.version, clientSideOnly = true)
+@Mod(modid = SkyHead.modID, version = SkyHead.version, clientSideOnly = true, updateJSON = "https://github.com/WispySparks/SkyHead/blob/master/update.json")
 public class SkyHead
 {
 	
