@@ -33,12 +33,12 @@ public class PlayerListGui extends GuiPlayerTabOverlay
     private static final Ordering<NetworkPlayerInfo> field_175252_a = Ordering.from(new PlayerListGui.PlayerComparator());
     private final Minecraft mc;
     private final GuiIngame guiIngame;
-    private IChatComponent footer;
-    private IChatComponent header;
+    public IChatComponent footer;
+    public IChatComponent header;
     /** The last time the playerlist was opened (went from not being renderd, to being rendered) */
-    private long lastTimeOpened;
+    public long lastTimeOpened;
     /** Weither or not the playerlist is currently being rendered */
-    private boolean isBeingRendered;
+    public boolean isBeingRendered;
 
     public PlayerListGui(Minecraft mcIn, GuiIngame guiIngameIn) {
         super(mcIn, guiIngameIn);
@@ -51,16 +51,17 @@ public class PlayerListGui extends GuiPlayerTabOverlay
      */
     @Override
     public String getPlayerName(NetworkPlayerInfo networkPlayerInfoIn)
-    {
-        if (networkPlayerInfoIn.getDisplayName() != null) { // if display name grab that
-            return networkPlayerInfoIn.getDisplayName().getFormattedText();
+    {   
+        if (Cache.inCache(networkPlayerInfoIn.getGameProfile().getName())) {
+            if (networkPlayerInfoIn.getDisplayName() != null) { // if display name grab that and add level
+                return networkPlayerInfoIn.getDisplayName().getFormattedText() + " " + Cache.queryCache(networkPlayerInfoIn.getGameProfile().getName());
+            }
+            else { // if no display name but in cache add on the level
+                return ScorePlayerTeam.formatPlayerName(networkPlayerInfoIn.getPlayerTeam(), networkPlayerInfoIn.getGameProfile().getName() + " " + Cache.queryCache(networkPlayerInfoIn.getGameProfile().getName()));
+            }
         }
-        else if (Cache.inCache(networkPlayerInfoIn.getGameProfile().getName())) { // if no display name but in cache add on the level
-            return ScorePlayerTeam.formatPlayerName(networkPlayerInfoIn.getPlayerTeam(), networkPlayerInfoIn.getGameProfile().getName() + " " + Cache.queryCache(networkPlayerInfoIn.getGameProfile().getName()));
-        }
-        else { // otherwise just do the normal name
-            return ScorePlayerTeam.formatPlayerName(networkPlayerInfoIn.getPlayerTeam(), networkPlayerInfoIn.getGameProfile().getName());
-        }
+        else if (networkPlayerInfoIn.getDisplayName() != null) return networkPlayerInfoIn.getDisplayName().getFormattedText(); // else grab display name
+        else return ScorePlayerTeam.formatPlayerName(networkPlayerInfoIn.getPlayerTeam(), networkPlayerInfoIn.getGameProfile().getName()); // else make name from team and username
     }
 
     /**

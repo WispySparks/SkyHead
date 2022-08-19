@@ -25,7 +25,7 @@ public class APILimiter {
 					Thread.sleep(timeLeft);
 					APILimiter.requests = 0;
 					APILimiter.timeLeft = 60000;
-				} catch (InterruptedException e) {}
+				} catch (InterruptedException e) {System.out.println(e);}
 			}
 		}
 	});

@@ -39,7 +39,7 @@ public class API {
     	    			Header[] timeLimit = response.getHeaders("RateLimit-Reset"); // get the initial time left for starting the clock
     	    			APILimiter.start(Integer.parseInt(timeLimit[0].getValue())); // start clock with that time left
     	    	        json = new BasicResponseHandler().handleResponse(response);
-    	    		} catch (Exception e) {} 
+    	    		} catch (Exception e) {System.out.println(e);} 
     	    		if (json != null) { // parse the json and grab the player's level or do level 1 if nothing is there
     	    			JsonElement jelement = new JsonParser().parse(json);
     	                JsonObject  jsonObject = jelement.getAsJsonObject();

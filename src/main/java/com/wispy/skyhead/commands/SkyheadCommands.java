@@ -13,8 +13,6 @@ import com.wispy.skyhead.util.Text;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.GuiPlayerTabOverlay;
-import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -28,7 +26,7 @@ import net.minecraftforge.common.config.Property;
 public class SkyheadCommands extends CommandBase {
 	
 	private final List<String> aliases = new ArrayList<String>(); // command aliases
-	private final String options = "<on:off:tab:sw:bw:key:requests:size>"; // availabe subcommands
+	private final String options = "<on:off:tab:sw:bw:key:requests:size:clear>"; // availabe subcommands
 	private final List<String> tabComplete = new ArrayList<String>(); // tab completions
 	
 	public SkyheadCommands() { // make sh also a valid command and add tab completions
@@ -41,6 +39,7 @@ public class SkyheadCommands extends CommandBase {
         tabComplete.add("key");
         tabComplete.add("requests");
         tabComplete.add("size");
+        tabComplete.add("clear");
 	}
 
 	@Override
@@ -86,7 +85,6 @@ public class SkyheadCommands extends CommandBase {
 				prop.setValue(false);
 				SkyHead.config.save();
 				SkyHead.enabled = false;
-				Display.currentLevel = "";
 				retrieveLevels();
 				mc.thePlayer.addChatMessage(Text.ChatText("Skyhead OFF", "§c"));
 			}
@@ -95,18 +93,6 @@ public class SkyheadCommands extends CommandBase {
 				SkyHead.tabEnabled = !prop.getBoolean();
 				prop.setValue(!prop.getBoolean());
 				SkyHead.config.save();
-				if (prop.getBoolean() == false) { // reset tab names of everyone
-					clearTab();
-				} else if (SkyHead.enabled) { // set tab names of everyone
-					GuiPlayerTabOverlay tabList = Minecraft.getMinecraft().ingameGUI.getTabList();
-					for (NetworkPlayerInfo player : mc.getNetHandler().getPlayerInfoMap()) {
-						if (player.getGameProfile().getName() == mc.thePlayer.getName()) continue;
-						if (Cache.inCache(player.getGameProfile().getName())) {
-							String name = tabList.getPlayerName(player) + " " + Cache.queryCache(player.getGameProfile().getName());
-							player.setDisplayName(Text.ChatText(name, ""));
-						}
-					}
-				}
 				mc.thePlayer.addChatMessage(Text.ChatText("Tab is now ", "§6")
 					.appendSibling(Text.ChatText(convertBool(SkyHead.tabEnabled, false), convertBool(SkyHead.tabEnabled, true))));
 			}
@@ -120,7 +106,6 @@ public class SkyheadCommands extends CommandBase {
 				Property prop = SkyHead.config.get(Configuration.CATEGORY_CLIENT, "mode", 0);
 				prop.setValue(0);
 				SkyHead.config.save();
-				clearTab();
 				SkyHead.mode = 0; // set mode in config and current instance
 				retrieveLevels();
 				mc.thePlayer.addChatMessage(Text.ChatText("Set to Skywars Mode", "§6"));
@@ -129,7 +114,6 @@ public class SkyheadCommands extends CommandBase {
 				Property prop = SkyHead.config.get(Configuration.CATEGORY_CLIENT, "mode", 0);
 				prop.setValue(1);
 				SkyHead.config.save();
-				clearTab();
 				SkyHead.mode = 1;  // set mode in config and current instance
 				retrieveLevels();
 				mc.thePlayer.addChatMessage(Text.ChatText("Set to Bedwars Mode", "§6"));
@@ -148,10 +132,16 @@ public class SkyheadCommands extends CommandBase {
 				}
 			}
 			else if (args[0].equals("help")) { // help command
-				mc.thePlayer.addChatMessage(Text.ChatText("Welcome to SkyHead. Here is an explanation of every command. "
-				+ "On and off will turn the whole mod on or off, tab will toggle showing levels in tab on and off, abbreviations are used to change the mode"
+				mc.thePlayer.addChatMessage(Text.ChatText("Welcome to SkyHead. Here is an explanation of every command."
+				+ " On and off will turn the whole mod on or off, tab will toggle showing levels in tab on and off, abbreviations are used to change the mode"
 				+ " such as sw or bw. Key is used to set the api key to be used by the mod, size tells you the current size of the players cached for"
-				+ " the mode you're currently in, and requests tells you how many requests have been sent to the api this minute.", "§6"));
+				+ " the mode you're currently in, and requests tells you how many requests have been sent to the api this minute. Using clearcache empties the player cache for"
+				+ " the current mode", "§6"));
+			}
+			else if (args[0].equals("clear")) { // clear player cache
+				Cache.clearCache();
+				mc.thePlayer.addChatMessage(Text.ChatText("Cleared Cache", "§6"));
+				retrieveLevels();
 			}
 			else { // if not a valid subcommand
 				mc.thePlayer.addChatMessage(Text.ChatText("Invalid Subcommand, " + options, "§6"));
@@ -189,25 +179,15 @@ public class SkyheadCommands extends CommandBase {
 
 	private void retrieveLevels() {
 		Minecraft mc = Minecraft.getMinecraft();
-		clearTab();
 		if (SkyHead.enabled) {
 			for (EntityPlayer player : mc.theWorld.playerEntities) { // set the names of everyone in the lobby
 				Events.setLevel(player);
 			}
 		} else {
+			Display.currentLevel = "";
 			for (EntityPlayer player : mc.theWorld.playerEntities) { // clear the names of everyone in the lobby
 				player.refreshDisplayName();
 			}
-		}
-	}
-
-	private void clearTab() {
-		Minecraft mc = Minecraft.getMinecraft();
-		GuiPlayerTabOverlay tabList = Minecraft.getMinecraft().ingameGUI.getTabList();
-		for (NetworkPlayerInfo player : mc.getNetHandler().getPlayerInfoMap()) {
-			if (player.getGameProfile().getName() == mc.thePlayer.getName()) continue;
-			String name = tabList.getPlayerName(player).replaceAll(" " + Cache.queryCache(player.getGameProfile().getName()), "");
-			player.setDisplayName(Text.ChatText(name, ""));
 		}
 	}
 

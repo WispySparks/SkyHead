@@ -22,7 +22,7 @@ public class SkyHead
 {
 	
     public static final String modID = "skyhead";
-    public static final String version = "LOCAL";
+    public static final String version = "1.4.1";
     public static Configuration config; // config
     public static boolean enabled; // mod on/off
     public static boolean tabEnabled; // whether tab mode is on or off

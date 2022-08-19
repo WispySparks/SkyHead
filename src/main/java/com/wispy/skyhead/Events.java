@@ -69,12 +69,13 @@ public class Events {
 		if (event.type.equals(RenderGameOverlayEvent.ElementType.PLAYER_LIST) && SkyHead.enabled && SkyHead.tabEnabled) {
 			event.setCanceled(true); // cancel original tab rendering
 			GuiPlayerTabOverlay tabList = Minecraft.getMinecraft().ingameGUI.getTabList();
+			Minecraft mc = Minecraft.getMinecraft();
 			try { // gather info from real tab list
-				playerList.setHeader((IChatComponent) header.get(tabList));
-				playerList.setFooter((IChatComponent) footer.get(tabList));
-				playerList.setTime(Long.valueOf(time.get(tabList).toString()));
-			} catch (IllegalArgumentException e) {} catch (IllegalAccessException e) {} // render my own custom tab list
-			playerList.renderPlayerlist(new ScaledResolution(Minecraft.getMinecraft()).getScaledWidth(), Minecraft.getMinecraft().theWorld.getScoreboard(), Minecraft.getMinecraft().theWorld.getScoreboard().getObjectiveInDisplaySlot(0));
+				playerList.header = (IChatComponent) header.get(tabList);
+				playerList.footer = (IChatComponent) footer.get(tabList);
+				playerList.lastTimeOpened = Long.valueOf(time.get(tabList).toString());
+			} catch (IllegalArgumentException e) {System.out.println(e);} catch (IllegalAccessException e) {System.out.println(e);} // render my own custom tab list
+			playerList.renderPlayerlist(new ScaledResolution(mc).getScaledWidth(), mc.theWorld.getScoreboard(), mc.theWorld.getScoreboard().getObjectiveInDisplaySlot(0));
 		}
 	}
 
