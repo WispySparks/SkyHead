@@ -8,17 +8,12 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class Display {
 	
-	public static String currentLevel = ""; // current level to add to a player's name
-	
     public static void newTag(EntityPlayer player, String level) { // set players level and add to cache
     	Cache.addPlayer(player.getName(), level);
-    	currentLevel = level;
     	player.refreshDisplayName(); // call name format event
     }
     
     public static void oldTag(EntityPlayer player) { // get player from cache and set level
-    	String level = Cache.queryCache(player.getName());
-    	currentLevel = level;
     	player.refreshDisplayName(); // call name format event
     }
 

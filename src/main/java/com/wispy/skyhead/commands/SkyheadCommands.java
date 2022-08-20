@@ -8,7 +8,6 @@ import com.wispy.skyhead.Events;
 import com.wispy.skyhead.SkyHead;
 import com.wispy.skyhead.api.API;
 import com.wispy.skyhead.api.APILimiter;
-import com.wispy.skyhead.gui.Display;
 import com.wispy.skyhead.util.Text;
 
 import net.minecraft.client.Minecraft;
@@ -184,7 +183,6 @@ public class SkyheadCommands extends CommandBase {
 				Events.setLevel(player);
 			}
 		} else {
-			Display.currentLevel = "";
 			for (EntityPlayer player : mc.theWorld.playerEntities) { // clear the names of everyone in the lobby
 				player.refreshDisplayName();
 			}

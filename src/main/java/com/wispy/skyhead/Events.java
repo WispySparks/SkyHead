@@ -38,11 +38,26 @@ public class Events {
     
     @SubscribeEvent
     public void nameFormat(PlayerEvent.NameFormat event) { // called when a players display name is changed
-    	event.displayname = event.displayname + Display.currentLevel; // set a players display name to their name plus level
-    	Display.currentLevel = ""; // reset current level
+		String level = Cache.queryCache(event.username); // get level
+    	event.displayname = event.displayname + level; // set a players display name to their name plus level
     }
-    
-    public static void setLevel(Entity entity) { // set the level of an entity
+
+	@SubscribeEvent
+	public void tabListRender(RenderGameOverlayEvent.Pre event) { // render event on tab list
+		if (event.type.equals(RenderGameOverlayEvent.ElementType.PLAYER_LIST) && SkyHead.enabled && SkyHead.tabEnabled) {
+			event.setCanceled(true); // cancel original tab rendering
+			GuiPlayerTabOverlay tabList = Minecraft.getMinecraft().ingameGUI.getTabList();
+			Minecraft mc = Minecraft.getMinecraft();
+			try { // gather info from real tab list
+				playerList.header = (IChatComponent) header.get(tabList);
+				playerList.footer = (IChatComponent) footer.get(tabList);
+				playerList.lastTimeOpened = Long.valueOf(time.get(tabList).toString());
+			} catch (IllegalArgumentException e) {System.out.println(e);} catch (IllegalAccessException e) {System.out.println(e);} // render my own custom tab list
+			playerList.renderPlayerlist(new ScaledResolution(mc).getScaledWidth(), mc.theWorld.getScoreboard(), mc.theWorld.getScoreboard().getObjectiveInDisplaySlot(0));
+		}
+	}
+
+	public static void setLevel(Entity entity) { // set the level of an entity
     	if (entity instanceof EntityOtherPlayerMP) { // make sure its a player and not local player
 			final EntityPlayer entityPlayer = (EntityPlayer) entity; // get entity object
 			if (!Cache.inCache(entity.getName())) { // check if we already have this players level
@@ -63,20 +78,5 @@ public class Events {
 			}
 		}
     }
-
-	@SubscribeEvent
-	public void tabListRender(RenderGameOverlayEvent.Pre event) { // render event on tab list
-		if (event.type.equals(RenderGameOverlayEvent.ElementType.PLAYER_LIST) && SkyHead.enabled && SkyHead.tabEnabled) {
-			event.setCanceled(true); // cancel original tab rendering
-			GuiPlayerTabOverlay tabList = Minecraft.getMinecraft().ingameGUI.getTabList();
-			Minecraft mc = Minecraft.getMinecraft();
-			try { // gather info from real tab list
-				playerList.header = (IChatComponent) header.get(tabList);
-				playerList.footer = (IChatComponent) footer.get(tabList);
-				playerList.lastTimeOpened = Long.valueOf(time.get(tabList).toString());
-			} catch (IllegalArgumentException e) {System.out.println(e);} catch (IllegalAccessException e) {System.out.println(e);} // render my own custom tab list
-			playerList.renderPlayerlist(new ScaledResolution(mc).getScaledWidth(), mc.theWorld.getScoreboard(), mc.theWorld.getScoreboard().getObjectiveInDisplaySlot(0));
-		}
-	}
 
 }
