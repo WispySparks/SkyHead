@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wispy.skyhead.Cache;
-import com.wispy.skyhead.Events;
 import com.wispy.skyhead.SkyHead;
 import com.wispy.skyhead.api.API;
 import com.wispy.skyhead.api.APILimiter;
+import com.wispy.skyhead.gui.Display;
 import com.wispy.skyhead.util.Text;
 
 import net.minecraft.client.Minecraft;
@@ -15,7 +15,6 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -38,7 +37,7 @@ public class SkyheadCommands extends CommandBase {
         tabComplete.add("key");
         tabComplete.add("requests");
         tabComplete.add("size");
-        tabComplete.add("clear");
+		tabComplete.add("clear");
 	}
 
 	@Override
@@ -76,7 +75,7 @@ public class SkyheadCommands extends CommandBase {
 				prop.setValue(true); 
 				SkyHead.config.save();
 				SkyHead.enabled = true;
-				retrieveLevels();
+				Display.setLevels();
 				mc.thePlayer.addChatMessage(Text.ChatText("Skyhead ON", "§a"));
 			}
 			else if (args[0].equals("off")) { // turn mod off
@@ -84,7 +83,7 @@ public class SkyheadCommands extends CommandBase {
 				prop.setValue(false);
 				SkyHead.config.save();
 				SkyHead.enabled = false;
-				retrieveLevels();
+				Display.setLevels();
 				mc.thePlayer.addChatMessage(Text.ChatText("Skyhead OFF", "§c"));
 			}
 			else if (args[0].equals("tab")) { // toggle tab levels on and off
@@ -106,7 +105,7 @@ public class SkyheadCommands extends CommandBase {
 				prop.setValue(0);
 				SkyHead.config.save();
 				SkyHead.mode = 0; // set mode in config and current instance
-				retrieveLevels();
+				Display.setLevels();
 				mc.thePlayer.addChatMessage(Text.ChatText("Set to Skywars Mode", "§6"));
 			}
 			else if (args[0].equals("bw")) { // set mod mode to bedwars levels
@@ -114,7 +113,7 @@ public class SkyheadCommands extends CommandBase {
 				prop.setValue(1);
 				SkyHead.config.save();
 				SkyHead.mode = 1;  // set mode in config and current instance
-				retrieveLevels();
+				Display.setLevels();
 				mc.thePlayer.addChatMessage(Text.ChatText("Set to Bedwars Mode", "§6"));
 			}
 			else if (args[0].equals("key")) { // set api key
@@ -125,6 +124,7 @@ public class SkyheadCommands extends CommandBase {
 					API.apikey = args[1];
 					SkyHead.enabled = true;
 					mc.thePlayer.addChatMessage(Text.ChatText("Set API Key to " + args[1], "§6"));
+					Display.setLevels();
 				}
 				else {
 					mc.thePlayer.addChatMessage(Text.ChatText("Must Specify API Key", "§6"));
@@ -134,13 +134,12 @@ public class SkyheadCommands extends CommandBase {
 				mc.thePlayer.addChatMessage(Text.ChatText("Welcome to SkyHead. Here is an explanation of every command."
 				+ " On and off will turn the whole mod on or off, tab will toggle showing levels in tab on and off, abbreviations are used to change the mode"
 				+ " such as sw or bw. Key is used to set the api key to be used by the mod, size tells you the current size of the players cached for"
-				+ " the mode you're currently in, and requests tells you how many requests have been sent to the api this minute. Using clearcache empties the player cache for"
-				+ " the current mode", "§6"));
+				+ " the mode you're currently in, and requests tells you how many requests have been sent to the api this minute.", "§6"));
 			}
-			else if (args[0].equals("clear")) { // clear player cache
+			else if (args[0].equals("clear")) { // clear player cache, unstable
 				Cache.clearCache();
 				mc.thePlayer.addChatMessage(Text.ChatText("Cleared Cache", "§6"));
-				retrieveLevels();
+				Display.setLevels();
 			}
 			else { // if not a valid subcommand
 				mc.thePlayer.addChatMessage(Text.ChatText("Invalid Subcommand, " + options, "§6"));
@@ -173,19 +172,6 @@ public class SkyheadCommands extends CommandBase {
 			return "Bedwars";
 		default:
 			return "No Mode";
-		}
-	}
-
-	private void retrieveLevels() {
-		Minecraft mc = Minecraft.getMinecraft();
-		if (SkyHead.enabled) {
-			for (EntityPlayer player : mc.theWorld.playerEntities) { // set the names of everyone in the lobby
-				Events.setLevel(player);
-			}
-		} else {
-			for (EntityPlayer player : mc.theWorld.playerEntities) { // clear the names of everyone in the lobby
-				player.refreshDisplayName();
-			}
 		}
 	}
 

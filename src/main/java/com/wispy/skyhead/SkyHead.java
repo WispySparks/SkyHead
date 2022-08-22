@@ -2,8 +2,12 @@ package com.wispy.skyhead;
 
 import java.io.File;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.wispy.skyhead.api.API;
 import com.wispy.skyhead.commands.SkyheadCommands;
+import com.wispy.skyhead.events.Events;
 
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -17,12 +21,14 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 /**
  * Main mod class where the startup events are fired.
  */
-@Mod(modid = SkyHead.modID, version = SkyHead.version, clientSideOnly = true, updateJSON = "https://github.com/WispySparks/SkyHead/blob/master/update.json")
+@Mod(modid = SkyHead.modID, version = SkyHead.version, clientSideOnly = true, updateJSON = SkyHead.updateLink)
 public class SkyHead
 {
 	
     public static final String modID = "skyhead";
-    public static final String version = "1.4.1";
+    public static final String version = "1.4.2";
+    public static final String updateLink = "https://raw.githubusercontent.com/WispySparks/SkyHead/master/update.json";
+    public static final Logger logger = LogManager.getLogger(modID);
     public static Configuration config; // config
     public static boolean enabled; // mod on/off
     public static boolean tabEnabled; // whether tab mode is on or off
@@ -50,5 +56,5 @@ public class SkyHead
     	MinecraftForge.EVENT_BUS.register(new Events()); // register events handler
         MinecraftForge.EVENT_BUS.register(this); // register my mod
     }
-    
+
 }

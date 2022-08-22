@@ -13,6 +13,7 @@ public class Cache { // stores the levels of bedwars and skywars at the same tim
 		switch (SkyHead.mode) {
 			case 0: playerCacheSW.put(player, level); break;
 			case 1: playerCacheBW.put(player, level); break;
+			default: break;
 		}
 	}
 	
@@ -24,22 +25,20 @@ public class Cache { // stores the levels of bedwars and skywars at the same tim
 		}
 	}
 	
-	public static boolean inCache(String player) { // check if a player is in the cache
+	public static boolean inCache(String player, Boolean tab) { // check if a player is in the cache
 		switch (SkyHead.mode) {
 			case 0:
-				for (String key : playerCacheSW.keySet()) {
-					if (key.equals(player)) {
-						if (playerCacheSW.get(key).equals(" §fLimit") || playerCacheSW.get(key).equals(" §fbadkey")) return false; // if a level wasn't grabbed before try and get it again
-						return true; // otherwise yes it is in the cache
-					}
+				if (playerCacheSW.containsKey(player)) {
+					if (tab) return true; // tab doesn't ever change things so it can render these label
+					if (playerCacheSW.get(player).equals(" §fLimit") || playerCacheSW.get(player).equals(" §fbadkey")) return false; // if a level wasn't grabbed before try and get it again
+					return true; // otherwise yes it is in the cache
 				}
 				return false;
 			case 1:
-				for (String key : playerCacheBW.keySet()) { // same thing but for bedwars
-					if (key.equals(player)) {
-						if (playerCacheBW.get(key).equals(" §fLimit") || playerCacheBW.get(key).equals(" §fbadkey")) return false; // if a level wasn't grabbed before try and get it again
-						return true;
-					}
+				if (playerCacheBW.containsKey(player)) {
+					if (tab) return true; // tab doesn't ever change things so it can render these label
+					if (playerCacheBW.get(player).equals(" §fLimit") || playerCacheBW.get(player).equals(" §fbadkey")) return false; // if a level wasn't grabbed before try and get it again
+					return true; // otherwise yes it is in the cache
 				}
 				return false;
 			default: return false;
@@ -58,6 +57,7 @@ public class Cache { // stores the levels of bedwars and skywars at the same tim
 		switch (SkyHead.mode) {
 			case 0: playerCacheSW.clear(); break;
 			case 1: playerCacheBW.clear(); break;
+			default: break;
 		}
 	}
 

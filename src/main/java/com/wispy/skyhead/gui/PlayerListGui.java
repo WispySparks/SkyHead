@@ -1,12 +1,13 @@
 package com.wispy.skyhead.gui;
 
+import java.util.Comparator;
+import java.util.List;
+
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 import com.mojang.authlib.GameProfile;
 import com.wispy.skyhead.Cache;
 
-import java.util.Comparator;
-import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngame;
@@ -38,7 +39,7 @@ public class PlayerListGui extends GuiPlayerTabOverlay
     /** The last time the playerlist was opened (went from not being renderd, to being rendered) */
     public long lastTimeOpened;
     /** Weither or not the playerlist is currently being rendered */
-    public boolean isBeingRendered;
+    private boolean isBeingRendered;
 
     public PlayerListGui(Minecraft mcIn, GuiIngame guiIngameIn) {
         super(mcIn, guiIngameIn);
@@ -52,7 +53,7 @@ public class PlayerListGui extends GuiPlayerTabOverlay
     @Override
     public String getPlayerName(NetworkPlayerInfo networkPlayerInfoIn)
     {   
-        if (Cache.inCache(networkPlayerInfoIn.getGameProfile().getName())) {
+        if (Cache.inCache(networkPlayerInfoIn.getGameProfile().getName(), true)) {
             if (networkPlayerInfoIn.getDisplayName() != null) { // if display name grab that and add level
                 return networkPlayerInfoIn.getDisplayName().getFormattedText() + " " + Cache.queryCache(networkPlayerInfoIn.getGameProfile().getName());
             }
