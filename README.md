@@ -1,6 +1,6 @@
 # SkyHead
 ## General
-![](https://img.shields.io/github/downloads/WispySparks/SkyHead/total?color=blue&label=Downloads)&nbsp;&nbsp;&nbsp;![](https://img.shields.io/github/v/release/WispySparks/SkyHead?color=blue&display_name=release&sort=semver)
+![](https://img.shields.io/github/downloads/WispySparks/SkyHead/total?color=blue&label=Downloads)&nbsp;&nbsp;&nbsp;![](https://img.shields.io/github/v/release/WispySparks/SkyHead?sort=semver)
 
 This is a 1.8.9 Minecraft Mod used to display Skywars (and Bedwars) Levels on Hypixel above player's head and in tab, to get started just put it in your mods folder and use the command
 `/skyhead key <apikeyhere>` and it should start working. 
