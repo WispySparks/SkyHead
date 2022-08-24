@@ -1,14 +1,13 @@
 # SkyHead
 ## General
-![](https://img.shields.io/github/downloads/WispySparks/SkyHead/total?color=blue&label=Downloads)&nbsp;&nbsp;&nbsp;![](https://img.shields.io/github/v/release/WispySparks/SkyHead?color=blue&display_name=release&sort=semver)
+![](https://img.shields.io/github/downloads/WispySparks/SkyHead/total?color=blue&label=Downloads)&nbsp;&nbsp;&nbsp;![](https://img.shields.io/github/v/release/WispySparks/SkyHead?sort=semver)
 
 This is a 1.8.9 Minecraft Mod used to display Skywars (and Bedwars) Levels on Hypixel above player's head and in tab, to get started just put it in your mods folder and use the command
 `/skyhead key <apikeyhere>` and it should start working. 
 You can get your apikey on hypixel by doing the command, `/api`.
 You can also abbreviate `/skyhead` to `/sh`. Turning the mod on and off will be remembered between launches through use of a config file. 
 If it says "Limit" next to a players name that means you have hit the limit of requests for that minute and you will have to wait a little bit. 
-This was built off of the recommended forge build for 1.8.9 and this mod is use at your own risk as all mods are on hypixel.
-I am not responsible for any harm that may come to you or false bans that could potentially happen.
+This was built off of the recommended forge build for 1.8.9 and this mod is use at your own risk as all modifications are on hypixel per the rules.
 ## Commands
 - `/sh` - Displays information on whether the mod is off or on and what mode you're in.
 - `/sh on` - Turns the mod on.
