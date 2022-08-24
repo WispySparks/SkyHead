@@ -25,18 +25,18 @@ public class Cache { // stores the levels of bedwars and skywars at the same tim
 		}
 	}
 	
-	public static boolean inCache(String player, Boolean tab) { // check if a player is in the cache
+	public static boolean inCache(String player, Boolean display) { // check if a player is in the cache
 		switch (SkyHead.mode) {
 			case 0:
 				if (playerCacheSW.containsKey(player)) {
-					if (tab) return true; // tab doesn't ever change things so it can render these label
+					if (display) return true; // tab doesn't ever change things so it can render these label
 					if (playerCacheSW.get(player).equals(" §fLimit") || playerCacheSW.get(player).equals(" §fbadkey")) return false; // if a level wasn't grabbed before try and get it again
 					return true; // otherwise yes it is in the cache
 				}
 				return false;
 			case 1:
 				if (playerCacheBW.containsKey(player)) {
-					if (tab) return true; // tab doesn't ever change things so it can render these label
+					if (display) return true; // tab doesn't ever change things so it can render these label
 					if (playerCacheBW.get(player).equals(" §fLimit") || playerCacheBW.get(player).equals(" §fbadkey")) return false; // if a level wasn't grabbed before try and get it again
 					return true; // otherwise yes it is in the cache
 				}

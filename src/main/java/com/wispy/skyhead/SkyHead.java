@@ -26,7 +26,7 @@ public class SkyHead
 {
 	
     public static final String modID = "skyhead";
-    public static final String version = "1.4.2";
+    public static final String version = "1.4.3";
     public static final String updateLink = "https://raw.githubusercontent.com/WispySparks/SkyHead/master/update.json";
     public static final Logger logger = LogManager.getLogger(modID);
     public static Configuration config; // config
