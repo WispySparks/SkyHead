@@ -20,7 +20,7 @@ tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
-version = "1.4.3"
+version = "1.5"
 group= "com.wispy.skyhead" 
 archivesBaseName = "SkyHead"
 

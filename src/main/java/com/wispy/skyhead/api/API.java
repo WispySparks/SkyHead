@@ -17,6 +17,7 @@ import com.wispy.skyhead.SkyHead;
 import com.wispy.skyhead.util.Text;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.EnumChatFormatting;
 /** 
  * Class used to interact with the Hypixel API and retrieve the preferred data for use.
  */ 
@@ -55,7 +56,7 @@ public class API {
         	                    	return " §71✫"; //lowest level
         	                	}
     	                		String level = jsonObject.get("player").getAsJsonObject().get("achievements").getAsJsonObject().get("bedwars_level").getAsString();
-    	                		return " " + getColor(level) + level.trim() + "✫"; // level from api
+    	                		return getFormattedBWLevel(level); // level from api
     	                	}
     	                }
     	    		} else if (response.getStatusLine().getStatusCode() == 403 && SkyHead.enabled) { // if unsuccessful invalid api key
@@ -75,19 +76,51 @@ public class API {
         return ""; // no key
     }
     
-    private static String getColor(String level) { // get the correct bedwars color for that level
+    private static String getFormattedBWLevel(String level) { // get the correct bedwars color for that level
+		String colorCode = "§7";
+		String assembledLevel = " " + colorCode + level.trim() + "✫";
+		Boolean rainbow = false;
+		String rainbowLevel = "";
     	int levelNum = Integer.parseInt(level);
-    	if (levelNum < 100) return "§7";
-    	if (levelNum < 200) return "§f";
-    	if (levelNum < 300) return "§6";
-    	if (levelNum < 400) return "§b";
-    	if (levelNum < 500) return "§2";
-    	if (levelNum < 600) return "§3";
-    	if (levelNum < 700) return "§4";
-    	if (levelNum < 800) return "§d";
-    	if (levelNum < 900) return "§9";
-    	if (levelNum < 1000) return "§5";
-    	return "§c"; // place holder for rainbow
+    	if (levelNum < 100) colorCode = "§7"; // check what color it is
+    	else if (levelNum < 200) colorCode = "§f";
+    	else if (levelNum < 300) colorCode = "§6";
+    	else if (levelNum < 400) colorCode = "§b";
+    	else if (levelNum < 500) colorCode = "§2";
+    	else if (levelNum < 600) colorCode = "§3";
+    	else if (levelNum < 700) colorCode = "§4";
+    	else if (levelNum < 800) colorCode = "§d";
+    	else if (levelNum < 900) colorCode = "§9";
+    	else if (levelNum < 1000) colorCode = "§5";
+    	else {
+			rainbowLevel = getRainbowString(level + "✫");
+			rainbow = true;
+		}  
+		if (rainbow) {
+			assembledLevel = " " + rainbowLevel;
+		} 
+		else {
+			assembledLevel = " " + colorCode + level.trim() + "✫";
+		}
+		return assembledLevel;
     }
+
+	private static String getRainbowString(String string) { // get a string with a different colorcode for each character to look like a rainbow
+		String rainbowString = "";
+		String[] colorChar = {
+			EnumChatFormatting.RED.toString(),
+			EnumChatFormatting.GOLD.toString(),
+			EnumChatFormatting.YELLOW.toString(),
+			EnumChatFormatting.GREEN.toString(),
+			EnumChatFormatting.AQUA.toString(),
+			EnumChatFormatting.BLUE.toString(),
+			EnumChatFormatting.LIGHT_PURPLE.toString(),
+			EnumChatFormatting.DARK_PURPLE.toString()
+		};
+		for (int i = 0; i < string.length(); i++) {
+			rainbowString += colorChar[i%8] + string.charAt(i);
+		}
+		return rainbowString;
+	}
 
 }

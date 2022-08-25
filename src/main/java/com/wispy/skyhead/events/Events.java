@@ -45,7 +45,7 @@ public class Events {
     
     @SubscribeEvent
     public void nameFormat(PlayerEvent.NameFormat event) { // called when a players display name is changed
-		String level = (SkyHead.enabled && Cache.inCache(event.username, true)) ? Cache.queryCache(event.username) : "";
+		String level = (SkyHead.enabled) ? Cache.queryCache(event.username) : "";
     	event.displayname = event.displayname + level; // set a players display name to their name plus level
     }
     

@@ -24,7 +24,7 @@ import net.minecraftforge.common.config.Property;
 public class SkyheadCommands extends CommandBase {
 	
 	private final List<String> aliases = new ArrayList<String>(); // command aliases
-	private final String options = "<on:off:tab:sw:bw:key:requests:size:clear>"; // availabe subcommands
+	private final String options = "<on:off:tab:mode:key:requests:size:clear>"; // availabe subcommands
 	private final List<String> tabComplete = new ArrayList<String>(); // tab completions
 	
 	public SkyheadCommands() { // make sh also a valid command and add tab completions
@@ -32,8 +32,7 @@ public class SkyheadCommands extends CommandBase {
         tabComplete.add("on");
         tabComplete.add("off");
         tabComplete.add("tab");
-        tabComplete.add("sw");
-        tabComplete.add("bw");
+        tabComplete.add("mode");
         tabComplete.add("key");
         tabComplete.add("requests");
         tabComplete.add("size");
@@ -100,21 +99,21 @@ public class SkyheadCommands extends CommandBase {
 			else if (args[0].equals("size")) { // display cache size
 				mc.thePlayer.addChatMessage(Text.ChatText("Player Cache Size: " + Cache.getSize(), "§6"));
 			}
-			else if (args[0].equals("sw")) { // set mod mode to skywars levels
-				Property prop = SkyHead.config.get(Configuration.CATEGORY_CLIENT, "mode", 0);
-				prop.setValue(0);
-				SkyHead.config.save();
-				SkyHead.mode = 0; // set mode in config and current instance
-				Display.setLevels();
-				mc.thePlayer.addChatMessage(Text.ChatText("Set to Skywars Mode", "§6"));
-			}
-			else if (args[0].equals("bw")) { // set mod mode to bedwars levels
-				Property prop = SkyHead.config.get(Configuration.CATEGORY_CLIENT, "mode", 0);
-				prop.setValue(1);
-				SkyHead.config.save();
-				SkyHead.mode = 1;  // set mode in config and current instance
-				Display.setLevels();
-				mc.thePlayer.addChatMessage(Text.ChatText("Set to Bedwars Mode", "§6"));
+			else if (args[0].equals("mode")) { // change level modes
+				if (args.length > 1) {
+					if (args[1].equals("sw")) {
+						handleMode(0);
+					}
+					else if (args[1].equals("bw")) {
+						handleMode(1);
+					}
+					else {
+						mc.thePlayer.addChatMessage(Text.ChatText("Invalid Mode, Valid Modes are sw and bw", "§6"));
+					}
+				}
+				else {
+					mc.thePlayer.addChatMessage(Text.ChatText("Must Specify a Mode", "§6"));
+				}
 			}
 			else if (args[0].equals("key")) { // set api key
 				if (args.length > 1) {
@@ -172,6 +171,30 @@ public class SkyheadCommands extends CommandBase {
 			return "Bedwars";
 		default:
 			return "No Mode";
+		}
+	}
+
+	private void handleMode(int mode) {
+		Minecraft mc = Minecraft.getMinecraft();
+		switch (mode) {
+			case 0: // SkyWars
+				Property prop0 = SkyHead.config.get(Configuration.CATEGORY_CLIENT, "mode", 0);
+				prop0.setValue(0);
+				SkyHead.config.save();
+				SkyHead.mode = 0; // set mode in config and current instance
+				Display.setLevels();
+				mc.thePlayer.addChatMessage(Text.ChatText("Set to Skywars Mode", "§6"));
+				break;
+			case 1: // BedWars
+				Property prop1 = SkyHead.config.get(Configuration.CATEGORY_CLIENT, "mode", 0);
+				prop1.setValue(1);
+				SkyHead.config.save();
+				SkyHead.mode = 1;  // set mode in config and current instance
+				Display.setLevels();
+				mc.thePlayer.addChatMessage(Text.ChatText("Set to Bedwars Mode", "§6"));
+				break;
+			default:
+				break;
 		}
 	}
 

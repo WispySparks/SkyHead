@@ -5,6 +5,7 @@
       "1.8.9-recommended" : "1.4.3"
     },
     "1.8.9" : {
+      "1.5" : "Made bedwars levels over 1000 actually be rainbows, made mode changing a subcommand. Made the custom tablist be below a bossbar.",
       "1.4.3" : "Fixed bug on display names showing null when they don't have a level yet.",
       "1.4.2" : "Fixed rare bug on display names, improved how names are set. Added update checker. Added command to clear the cache for testing purposes. Cleaned up code.",
       "1.4.1" : "Fixed spectator name bug.",
