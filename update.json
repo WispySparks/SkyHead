@@ -1,8 +1,8 @@
 {
     "homepage": "https://github.com/WispySparks/SkyHead/releases",
     "promos": {
-      "1.8.9-latest"     : "1.4.3",
-      "1.8.9-recommended" : "1.4.3"
+      "1.8.9-latest"     : "1.5",
+      "1.8.9-recommended" : "1.5"
     },
     "1.8.9" : {
       "1.5" : "Made bedwars levels over 1000 actually be rainbows, made mode changing a subcommand. Made the custom tablist be below a bossbar.",
