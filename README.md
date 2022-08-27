@@ -13,8 +13,8 @@ This was built off of the recommended forge build for 1.8.9 and this mod is use 
 - `/sh on` - Turns the mod on.
 - `/sh off` - Turns the mod off.
 - `/sh tab` - Toggles tab levels on and off.
-- `/sh sw` - Changes displayed levels to Skywars.
-- `/sh bw` - Changes displayed levels to Bedwars.
+- `/sh mode sw` - Changes displayed levels to Skywars.
+- `/sh mode bw` - Changes displayed levels to Bedwars.
 - `/sh requests` - Displays the number of requests made to the api this minute.
 - `/sh size` - Displays the size of the player cache for the current mode you're in.
 - `/sh key` - Used for setting your api key for the mod to use.
