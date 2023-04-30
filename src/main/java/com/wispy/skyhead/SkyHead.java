@@ -9,6 +9,7 @@ import com.wispy.skyhead.api.API;
 import com.wispy.skyhead.commands.SkyheadCommands;
 import com.wispy.skyhead.events.Events;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -22,11 +23,10 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
  * Main mod class where the startup events are fired.
  */
 @Mod(modid = SkyHead.modID, version = SkyHead.version, clientSideOnly = true, updateJSON = SkyHead.updateLink)
-public class SkyHead
-{
+public class SkyHead {
 	
     public static final String modID = "skyhead";
-    public static final String version = "1.5";
+    public static final String version = "1.5.1";
     public static final String updateLink = "https://raw.githubusercontent.com/WispySparks/SkyHead/master/update.json";
     public static final Logger logger = LogManager.getLogger(modID);
     public static Configuration config; // config
@@ -50,11 +50,15 @@ public class SkyHead
     }
     
     @EventHandler
-    public void init(FMLInitializationEvent event) // register my mod stuff
-    {
-    	ClientCommandHandler.instance.registerCommand(new SkyheadCommands()); // register commands
+    public void init(FMLInitializationEvent event) { // register my mod stuff
+        ClientCommandHandler.instance.registerCommand(new SkyheadCommands()); // register commands
     	MinecraftForge.EVENT_BUS.register(new Events()); // register events handler
         MinecraftForge.EVENT_BUS.register(this); // register my mod
+    } 
+
+    public static boolean allowedToSet() {
+        Minecraft mc = Minecraft.getMinecraft();
+        return !mc.isSingleplayer() && mc.getCurrentServerData().serverIP.equals("mc.hypixel.net") && SkyHead.enabled;
     }
 
 }

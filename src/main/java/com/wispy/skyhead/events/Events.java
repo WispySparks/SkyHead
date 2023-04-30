@@ -37,21 +37,21 @@ public class Events {
 
     @SubscribeEvent
     public void onPlayerJoin(EntityJoinWorldEvent event) {
-        Minecraft mc = Minecraft.getMinecraft(); // get minecraft
-    	if (!mc.isSingleplayer() && mc.getCurrentServerData().serverIP.equals("mc.hypixel.net") && SkyHead.enabled) { // make sure not in singleplayer and on hypixel and mod enabled
-    		Display.setLevel(event.entity); // set level for the entity
-    	}
+        if (!SkyHead.allowedToSet()) return;
+        Display.setLevel(event.entity); // set level for the entity
     }
     
     @SubscribeEvent
     public void nameFormat(PlayerEvent.NameFormat event) { // called when a players display name is changed
-		String level = (SkyHead.enabled) ? Cache.queryCache(event.username) : "";
+        if (!SkyHead.allowedToSet()) return;
+		String level = Cache.queryCache(event.username);
     	event.displayname = event.displayname + level; // set a players display name to their name plus level
     }
     
 	@SubscribeEvent
 	public void tabListRender(RenderGameOverlayEvent.Pre event) { // render event on tab list
-		if (event.type.equals(RenderGameOverlayEvent.ElementType.PLAYER_LIST) && SkyHead.enabled && SkyHead.tabEnabled) {
+        if (!SkyHead.allowedToSet()) return;
+		if (event.type.equals(RenderGameOverlayEvent.ElementType.PLAYER_LIST) && SkyHead.tabEnabled) {
 			event.setCanceled(true); // cancel original tab rendering
 			GuiPlayerTabOverlay tabList = Minecraft.getMinecraft().ingameGUI.getTabList();
 			Minecraft mc = Minecraft.getMinecraft();

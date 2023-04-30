@@ -1,7 +1,6 @@
 package com.wispy.skyhead.api;
 
 import com.wispy.skyhead.SkyHead;
-import com.wispy.skyhead.gui.Display;
 
 /** 
  * Helper class to limit the API from going over the request limit of 120 a minute.
@@ -28,7 +27,6 @@ public class APILimiter {
 					Thread.sleep(timeLeft);
 					APILimiter.requests = 0;
 					APILimiter.timeLeft = 60000;
-					Display.setLevels();
 				} catch (InterruptedException e) {SkyHead.logger.error(e);}
 			}
 		}

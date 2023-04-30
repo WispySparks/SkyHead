@@ -46,7 +46,7 @@ public class Display {
 
     public static void setLevels() {
 		Minecraft mc = Minecraft.getMinecraft();
-		if (SkyHead.enabled) {
+		if (SkyHead.allowedToSet()) {
 			for (EntityPlayer player : mc.theWorld.playerEntities) { // set the names of everyone in the lobby
 				setLevel(player);
 			}
