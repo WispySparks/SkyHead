@@ -53,3 +53,7 @@ processResources
         exclude 'mcmod.info'
     }
 }
+
+jar {
+    destinationDir = file("${System.properties['user.home']}/AppData/Roaming/.minecraft/mods")
+}
