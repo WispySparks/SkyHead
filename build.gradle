@@ -1,10 +1,7 @@
 buildscript {
     repositories {
         jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
+        maven { url = "https://files.minecraftforge.net/maven" }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
@@ -21,7 +18,7 @@ tasks.withType(JavaCompile) {
 }
 
 version = "1.5.1"
-group= "com.wispy.skyhead" 
+group= "wispysparks.skyhead" 
 archivesBaseName = "SkyHead"
 
 minecraft {
@@ -31,11 +28,9 @@ minecraft {
     makeObfSourceJar = false
 }
 
-dependencies {
-}
+dependencies {}
 
-processResources
-{
+processResources {
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
@@ -55,5 +50,9 @@ processResources
 }
 
 jar {
-    destinationDir = file("${System.properties['user.home']}/AppData/Roaming/.minecraft/mods")
+    if (project.hasProperty("mcdir")) {
+        if (project.getProperty("mcdir").equals("true")) {
+            destinationDir = file("${System.properties['user.home']}/AppData/Roaming/.minecraftHypixel/mods")
+        }
+    }
 }

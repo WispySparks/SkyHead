@@ -1,14 +1,7 @@
-package com.wispy.skyhead.commands;
+package wispysparks.skyhead.commands;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.wispy.skyhead.Cache;
-import com.wispy.skyhead.SkyHead;
-import com.wispy.skyhead.api.API;
-import com.wispy.skyhead.api.APILimiter;
-import com.wispy.skyhead.gui.Display;
-import com.wispy.skyhead.util.Text;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -18,6 +11,12 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import wispysparks.skyhead.Cache;
+import wispysparks.skyhead.SkyHead;
+import wispysparks.skyhead.api.API;
+import wispysparks.skyhead.api.APILimiter;
+import wispysparks.skyhead.gui.Display;
+import wispysparks.skyhead.util.Text;
 /** 
  * Class for handling player commands.
  */  

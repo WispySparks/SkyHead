@@ -1,4 +1,4 @@
-package com.wispy.skyhead.api;
+package wispysparks.skyhead.api;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -13,11 +13,11 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.wispy.skyhead.SkyHead;
-import com.wispy.skyhead.util.Text;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumChatFormatting;
+import wispysparks.skyhead.SkyHead;
+import wispysparks.skyhead.util.Text;
 /** 
  * Class used to interact with the Hypixel API and retrieve the preferred data for use.
  */ 

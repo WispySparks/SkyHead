@@ -1,13 +1,12 @@
-package com.wispy.skyhead.gui;
-
-import com.wispy.skyhead.Cache;
-import com.wispy.skyhead.SkyHead;
-import com.wispy.skyhead.api.API;
+package wispysparks.skyhead.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import wispysparks.skyhead.Cache;
+import wispysparks.skyhead.SkyHead;
+import wispysparks.skyhead.api.API;
 /**
  * This class is used to interact with the visible elements on the screen to set player names.
  */

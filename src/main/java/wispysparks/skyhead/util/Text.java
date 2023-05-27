@@ -1,4 +1,4 @@
-package com.wispy.skyhead.util;
+package wispysparks.skyhead.util;
 
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;

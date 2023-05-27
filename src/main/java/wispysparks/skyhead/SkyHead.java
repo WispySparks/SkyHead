@@ -1,13 +1,9 @@
-package com.wispy.skyhead;
+package wispysparks.skyhead;
 
 import java.io.File;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.wispy.skyhead.api.API;
-import com.wispy.skyhead.commands.SkyheadCommands;
-import com.wispy.skyhead.events.Events;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -19,6 +15,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import wispysparks.skyhead.api.API;
+import wispysparks.skyhead.commands.SkyheadCommands;
+import wispysparks.skyhead.events.Events;
 /**
  * Main mod class where the startup events are fired.
  */

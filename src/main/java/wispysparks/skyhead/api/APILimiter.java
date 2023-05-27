@@ -1,6 +1,6 @@
-package com.wispy.skyhead.api;
+package wispysparks.skyhead.api;
 
-import com.wispy.skyhead.SkyHead;
+import wispysparks.skyhead.SkyHead;
 
 /** 
  * Helper class to limit the API from going over the request limit of 120 a minute.

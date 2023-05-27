@@ -1,4 +1,4 @@
-package com.wispy.skyhead.gui;
+package wispysparks.skyhead.gui;
 
 import java.util.Comparator;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.List;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 import com.mojang.authlib.GameProfile;
-import com.wispy.skyhead.Cache;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -29,6 +28,7 @@ import net.minecraft.world.WorldSettings;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import wispysparks.skyhead.Cache;
 
 @SideOnly(Side.CLIENT)
 public class PlayerListGui extends GuiPlayerTabOverlay

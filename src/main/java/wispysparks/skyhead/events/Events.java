@@ -1,14 +1,8 @@
-package com.wispy.skyhead.events;
+package wispysparks.skyhead.events;
 
 import java.lang.reflect.Field;
 
 import org.apache.logging.log4j.Logger;
-
-import com.wispy.skyhead.Cache;
-import com.wispy.skyhead.SkyHead;
-import com.wispy.skyhead.gui.Display;
-import com.wispy.skyhead.gui.PlayerListGui;
-import com.wispy.skyhead.util.Text;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiPlayerTabOverlay;
@@ -23,6 +17,11 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import wispysparks.skyhead.Cache;
+import wispysparks.skyhead.SkyHead;
+import wispysparks.skyhead.gui.Display;
+import wispysparks.skyhead.gui.PlayerListGui;
+import wispysparks.skyhead.util.Text;
 /**
  * Events class where events are subscribed to and handled when fired.
  */

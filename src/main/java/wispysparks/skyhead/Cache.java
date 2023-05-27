@@ -1,4 +1,4 @@
-package com.wispy.skyhead;
+package wispysparks.skyhead;
 
 import java.util.concurrent.ConcurrentHashMap;
 /**
