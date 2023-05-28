@@ -4,21 +4,23 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import wispysparks.skyhead.Cache;
 import wispysparks.skyhead.SkyHead;
 import wispysparks.skyhead.api.API;
+import wispysparks.skyhead.api.Cache;
 
 /**
  * This class is used to interact with the visible elements on the screen to set player names.
  */
 public class Display {
 	
-    public static void setLevel(Entity entity) { // set the level of an entity
+    public static void setLevel(Entity entity) { 
     	if (entity instanceof EntityOtherPlayerMP) { // make sure its a player and not local player
 			final EntityOtherPlayerMP player = (EntityOtherPlayerMP) entity; 
-			if (!Cache.inCache(player.getName(), false)) { 
+			String result = Cache.query(player.getName());
+			if (!Cache.contains(player.getName()) || result.equals(" §fLimit") || result.equals(" §fbadkey") || result.equals("")) { 
             	new Thread(() -> {
 					String level = API.getLevel(player.getUniqueID().toString()); 
+					System.out.println("SkyHead: " + player.getName() + level);
 					Cache.addPlayer(player.getName(), level);
 					player.refreshDisplayName(); 
 				}).start();

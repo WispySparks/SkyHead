@@ -1,9 +1,11 @@
-package wispysparks.skyhead;
+package wispysparks.skyhead.api;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import wispysparks.skyhead.Config;
+
 /**
- * Class used for storing hashmaps of players and levels with functionality for those hashmaps.
+ * Stores all the hashmaps for each mode and provides convenience methods to do operations on the current mode's cache.
  */
 public class Cache { 
 	
@@ -18,7 +20,12 @@ public class Cache {
 		}
 	}
 	
-	public static String queryCache(String player) {
+	/**
+	 * Users should make a call to {@link Cache#contains()} before this method as otherwise it could return null.
+	 * @param player name
+	 * @return player's level
+	 */
+	public static String query(String player) {
 		switch (Config.getMode()) {
 			case SKYWARS: return playerCacheSW.get(player);
 			case BEDWARS: return playerCacheBW.get(player);
@@ -26,22 +33,10 @@ public class Cache {
 		}
 	}
 	
-	public static boolean inCache(String player, Boolean display) { 
+	public static boolean contains(String player) { 
 		switch (Config.getMode()) {
-			case SKYWARS:
-				if (playerCacheSW.containsKey(player)) {
-					if (display) return true; // for soley rendering the key
-					if (playerCacheSW.get(player).equals(" §fLimit") || playerCacheSW.get(player).equals(" §fbadkey") || playerCacheSW.get(player).equals("")) return false; // if a level wasn't grabbed before try and get it again
-					return true; // otherwise yes it is in the cache
-				}
-				return false;
-			case BEDWARS:
-				if (playerCacheBW.containsKey(player)) {
-					if (display) return true; // for soley rendering the key
-					if (playerCacheBW.get(player).equals(" §fLimit") || playerCacheBW.get(player).equals(" §fbadkey") || playerCacheBW.get(player).equals("")) return false; // if a level wasn't grabbed before try and get it again
-					return true; // otherwise yes it is in the cache
-				}
-				return false;
+			case SKYWARS: return playerCacheSW.containsKey(player);
+			case BEDWARS: return playerCacheBW.containsKey(player);
 			default: throw new IllegalArgumentException("Invalid Mode");
 		}
 	}
@@ -54,7 +49,7 @@ public class Cache {
 		}
 	}
 	
-	public static void clearCache() { 
+	public static void clear() { 
 		switch (Config.getMode()) {
 			case SKYWARS: playerCacheSW.clear(); break;
 			case BEDWARS: playerCacheBW.clear(); break;

@@ -12,16 +12,16 @@ public class APILimiter {
 	private static boolean started = false; 
 	private static int timeLeft; 
 	
-	public static void start(int timeLeft) { 
+	public static void start(int timeLeftMilliseconds) { 
 		if (started == false) { 
-			APILimiter.timeLeft = timeLeft*1000; // convert seconds to milliseconds
+			APILimiter.timeLeft = timeLeftMilliseconds;
 			started = true;
 			timer.start();
 		}
 	}
 
-	public static synchronized void updateRequests(int amount) {
-		requests += amount;
+	public static void incrementRequests() {
+		requests++;
 	}
 
 	public static int getRequests() {
@@ -35,7 +35,7 @@ public class APILimiter {
 				APILimiter.requests = 0;
 				APILimiter.timeLeft = 60000;
 			} catch (InterruptedException e) {
-				SkyHead.LOGGER.error("API Limiter Error", e);
+				SkyHead.LOGGER.error("SkyHead API Limiter Error", e);
 			}
 		}
 	});

@@ -9,10 +9,10 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
-import wispysparks.skyhead.Cache;
 import wispysparks.skyhead.Config;
 import wispysparks.skyhead.Config.Mode;
 import wispysparks.skyhead.api.APILimiter;
+import wispysparks.skyhead.api.Cache;
 import wispysparks.skyhead.gui.Display;
 import wispysparks.skyhead.util.Text;
 /** 
@@ -121,7 +121,7 @@ public class SkyheadCommands extends CommandBase {
 				+ " the mode you're currently in, and requests tells you how many requests have been sent to the api this minute.", "§6"));
 			}
 			else if (args[0].equals("clear")) { // clear player cache, unstable
-				Cache.clearCache();
+				Cache.clear();
 				mc.thePlayer.addChatMessage(Text.ChatText("Cleared Cache", "§6"));
 				Display.setLevels();
 			}

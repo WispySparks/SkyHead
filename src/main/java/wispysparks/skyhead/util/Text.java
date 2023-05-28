@@ -39,7 +39,7 @@ public class Text {
 			case "§d": format = EnumChatFormatting.LIGHT_PURPLE; break;
 			case "§e": format = EnumChatFormatting.YELLOW; break;
 			case "§f": format = EnumChatFormatting.WHITE; break;
-			default: throw new IllegalArgumentException("Invalid Color Indentifier");
+			default: format = EnumChatFormatting.WHITE; break;
 		}
 		return format;
 	}
