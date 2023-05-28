@@ -14,7 +14,6 @@ import net.minecraft.client.gui.GuiPlayerTabOverlay;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.scoreboard.IScoreObjectiveCriteria;
@@ -25,7 +24,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldSettings;
-import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import wispysparks.skyhead.Cache;
@@ -87,11 +85,6 @@ public class PlayerListGui extends GuiPlayerTabOverlay
     @Override
     public void renderPlayerlist(int width, Scoreboard scoreboardIn, ScoreObjective scoreObjectiveIn)
     {
-        Boolean bossBar = GuiIngameForge.renderBossHealth && BossStatus.statusBarTime > 0 && BossStatus.bossName != null; // check if boss bar
-        if (bossBar) { // move tab list down 10 pixels
-            GlStateManager.pushMatrix();
-            GlStateManager.translate(0, 10, 0);
-        }
         NetHandlerPlayClient nethandlerplayclient = this.mc.thePlayer.sendQueue;
         List<NetworkPlayerInfo> list = field_175252_a.<NetworkPlayerInfo>sortedCopy(nethandlerplayclient.getPlayerInfoMap());
         int i = 0;
@@ -254,9 +247,6 @@ public class PlayerListGui extends GuiPlayerTabOverlay
                 this.mc.fontRendererObj.drawStringWithShadow(s4, (float)(width / 2 - j5 / 2), (float)k1, -1);
                 k1 += this.mc.fontRendererObj.FONT_HEIGHT;
             }
-        }
-        if (bossBar) {
-            GlStateManager.popMatrix();
         }
     }
 

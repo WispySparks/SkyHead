@@ -9,11 +9,9 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
 import wispysparks.skyhead.Cache;
-import wispysparks.skyhead.SkyHead;
-import wispysparks.skyhead.api.API;
+import wispysparks.skyhead.Config;
+import wispysparks.skyhead.Config.Mode;
 import wispysparks.skyhead.api.APILimiter;
 import wispysparks.skyhead.gui.Display;
 import wispysparks.skyhead.util.Text;
@@ -22,11 +20,11 @@ import wispysparks.skyhead.util.Text;
  */  
 public class SkyheadCommands extends CommandBase {
 	
-	private final List<String> aliases = new ArrayList<String>(); // command aliases
-	private final String options = "<on:off:tab:mode:key:requests:size:clear>"; // availabe subcommands
-	private final List<String> tabComplete = new ArrayList<String>(); // tab completions
+	private final List<String> aliases = new ArrayList<>(); 
+	private final List<String> tabComplete = new ArrayList<>(); 
+	private final String subCommands = "<on:off:tab:mode:key:requests:size:clear>"; 
 	
-	public SkyheadCommands() { // make sh also a valid command and add tab completions
+	public SkyheadCommands() { 
         aliases.add("sh"); 
         tabComplete.add("on");
         tabComplete.add("off");
@@ -39,29 +37,29 @@ public class SkyheadCommands extends CommandBase {
 	}
 
 	@Override
-	public String getCommandName() { // set cmd name
+	public String getCommandName() {
 		return "skyhead";
+	}
+
+	@Override 
+    public List<String> getCommandAliases() { 
+		return this.aliases;
 	}
 
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
-		return "skyhead " + options;
-	}
-	
-	@Override 
-    public List<String> getCommandAliases() { // add sh as an alias
-		return this.aliases;
+		return "skyhead " + subCommands;
 	}
 	
 	@Override
 	public boolean canCommandSenderUseCommand(ICommandSender commandSender) {
-		if (commandSender instanceof EntityPlayerSP) return true; // only work if player is local player
+		if (commandSender instanceof EntityPlayerSP) return true; 
 		return false;
 	}
 	
 	@Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
-        return getListOfStringsMatchingLastWord(args, tabComplete); // add tab completion
+        return getListOfStringsMatchingLastWord(args, tabComplete);
     }
 
 	@Override
@@ -69,31 +67,22 @@ public class SkyheadCommands extends CommandBase {
 		Minecraft mc = Minecraft.getMinecraft();
 		if (args.length > 0) {
 			if (args[0].equals("on")) { // turn mod on
-				Property prop = SkyHead.config.get(Configuration.CATEGORY_CLIENT, "enabled", true); // get config property and set it so that it persists between launches
-				prop.setValue(true); 
-				SkyHead.config.save();
-				SkyHead.enabled = true;
+				Config.setEnabled(true);
 				Display.setLevels();
 				mc.thePlayer.addChatMessage(Text.ChatText("Skyhead ON", "§a"));
 			}
 			else if (args[0].equals("off")) { // turn mod off
-				Property prop = SkyHead.config.get(Configuration.CATEGORY_CLIENT, "enabled", true); // get config property and set it so that it persists between launches
-				prop.setValue(false);
-				SkyHead.config.save();
-				SkyHead.enabled = false;
+				Config.setEnabled(false);
 				Display.setLevels();
 				mc.thePlayer.addChatMessage(Text.ChatText("Skyhead OFF", "§c"));
 			}
 			else if (args[0].equals("tab")) { // toggle tab levels on and off
-				Property prop = SkyHead.config.get(Configuration.CATEGORY_CLIENT, "tabEnabled", false);
-				SkyHead.tabEnabled = !prop.getBoolean();
-				prop.setValue(!prop.getBoolean());
-				SkyHead.config.save();
+				Config.setTabEnabled(!Config.isTabEnabled());
 				mc.thePlayer.addChatMessage(Text.ChatText("Tab is now ", "§6")
-					.appendSibling(Text.ChatText(convertBool(SkyHead.tabEnabled, false), convertBool(SkyHead.tabEnabled, true))));
+					.appendSibling(Text.ChatText(convertBool(Config.isTabEnabled(), false), convertBool(Config.isTabEnabled(), true))));
 			}
 			else if (args[0].equals("requests")) { // display number of requests this minute
-				mc.thePlayer.addChatMessage(Text.ChatText("Requests made this minute: " + APILimiter.requests, "§6"));
+				mc.thePlayer.addChatMessage(Text.ChatText("Requests made this minute: " + APILimiter.getRequests(), "§6"));
 			}
 			else if (args[0].equals("size")) { // display cache size
 				mc.thePlayer.addChatMessage(Text.ChatText("Player Cache Size: " + Cache.getSize(), "§6"));
@@ -101,10 +90,10 @@ public class SkyheadCommands extends CommandBase {
 			else if (args[0].equals("mode")) { // change level modes
 				if (args.length > 1) {
 					if (args[1].equals("sw")) {
-						handleMode(0);
+						handleMode(Mode.SKYWARS);
 					}
 					else if (args[1].equals("bw")) {
-						handleMode(1);
+						handleMode(Mode.BEDWARS);
 					}
 					else {
 						mc.thePlayer.addChatMessage(Text.ChatText("Invalid Mode, Valid Modes are sw and bw", "§6"));
@@ -116,11 +105,8 @@ public class SkyheadCommands extends CommandBase {
 			}
 			else if (args[0].equals("key")) { // set api key
 				if (args.length > 1) {
-					Property prop = SkyHead.config.get(Configuration.CATEGORY_CLIENT, "apiKey", ""); // get config property and set it so that it persists between launches
-					prop.setValue(args[1]);  // set key in config and in code
-					SkyHead.config.save();
-					API.apikey = args[1];
-					SkyHead.enabled = true;
+					Config.setAPIKey(args[1]);
+					Config.setEnabled(true);
 					mc.thePlayer.addChatMessage(Text.ChatText("Set API Key to " + args[1], "§6"));
 					Display.setLevels();
 				}
@@ -140,16 +126,16 @@ public class SkyheadCommands extends CommandBase {
 				Display.setLevels();
 			}
 			else { // if not a valid subcommand
-				mc.thePlayer.addChatMessage(Text.ChatText("Invalid Subcommand, " + options, "§6"));
+				mc.thePlayer.addChatMessage(Text.ChatText("Invalid Subcommand, " + subCommands, "§6"));
 			}
 		}
 		else { // if no subcommand given
 			mc.thePlayer.addChatMessage(Text.ChatText("SkyHead is currently ", "§6")
-				.appendSibling(Text.ChatText(convertBool(SkyHead.enabled, false), convertBool(SkyHead.enabled, true)))
+				.appendSibling(Text.ChatText(convertBool(Config.isEnabled(), false), convertBool(Config.isEnabled(), true)))
 				.appendSibling(Text.ChatText(" with tab levels ", "§6"))
-				.appendSibling(Text.ChatText(convertBool(SkyHead.tabEnabled, false), convertBool(SkyHead.tabEnabled, true)))
+				.appendSibling(Text.ChatText(convertBool(Config.isTabEnabled(), false), convertBool(Config.isTabEnabled(), true)))
 				.appendSibling(Text.ChatText(" and is in mode ", "§6")
-				.appendSibling(Text.ChatText(convertMode(SkyHead.mode), "§5"))));
+				.appendSibling(Text.ChatText(Config.getMode().getName(), "§5"))));
 		}
 	}
 	
@@ -162,39 +148,11 @@ public class SkyheadCommands extends CommandBase {
 		return "§c";
 	}
 	
-	private String convertMode(int mode) { // convert the mode to text
-		switch (mode) {
-		case 0:
-			return "Skywars";
-		case 1:
-			return "Bedwars";
-		default:
-			return "No Mode";
-		}
-	}
-
-	private void handleMode(int mode) {
+	private void handleMode(Mode mode) {
 		Minecraft mc = Minecraft.getMinecraft();
-		switch (mode) {
-			case 0: // SkyWars
-				Property prop0 = SkyHead.config.get(Configuration.CATEGORY_CLIENT, "mode", 0);
-				prop0.setValue(0);
-				SkyHead.config.save();
-				SkyHead.mode = 0; // set mode in config and current instance
-				Display.setLevels();
-				mc.thePlayer.addChatMessage(Text.ChatText("Set to Skywars Mode", "§6"));
-				break;
-			case 1: // BedWars
-				Property prop1 = SkyHead.config.get(Configuration.CATEGORY_CLIENT, "mode", 0);
-				prop1.setValue(1);
-				SkyHead.config.save();
-				SkyHead.mode = 1;  // set mode in config and current instance
-				Display.setLevels();
-				mc.thePlayer.addChatMessage(Text.ChatText("Set to Bedwars Mode", "§6"));
-				break;
-			default:
-				break;
-		}
+		Config.setMode(mode);
+		Display.setLevels();
+		mc.thePlayer.addChatMessage(Text.ChatText("Set to " + mode.getName() + " Mode", "§6"));
 	}
 
 }

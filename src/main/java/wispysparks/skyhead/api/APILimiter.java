@@ -7,27 +7,35 @@ import wispysparks.skyhead.SkyHead;
  */ 
 public class APILimiter {
 	
-	public static int requests = 0; // number of requests made this minute
-	private static boolean started = false; // whether or not the limiter clock has been started
-	private static int timeLeft; // how much time left until next reset
+	public static final int MAX_REQUESTS = 110;
+	private static int requests = 0; // number of requests made this minute
+	private static boolean started = false; 
+	private static int timeLeft; 
 	
-	public static void start(int timeLeft) { // start the clock and get an inital time left from the api
+	public static void start(int timeLeft) { 
 		if (started == false) { 
 			APILimiter.timeLeft = timeLeft*1000; // convert seconds to milliseconds
 			started = true;
-			main.start();
+			timer.start();
 		}
 	}
+
+	public static synchronized void updateRequests(int amount) {
+		requests += amount;
+	}
+
+	public static int getRequests() {
+		return requests;
+	}
 	
-	private static Thread main = new Thread(new Runnable() { // reset requests made to 0 every minute
-		@Override
-		public void run() {
-			while (true) { // every minute after initial time left set requests back to 0
-				try {
-					Thread.sleep(timeLeft);
-					APILimiter.requests = 0;
-					APILimiter.timeLeft = 60000;
-				} catch (InterruptedException e) {SkyHead.logger.error(e);}
+	private static Thread timer = new Thread(() -> {
+		while (true) { // every minute after initial time left set requests back to 0
+			try {
+				Thread.sleep(timeLeft);
+				APILimiter.requests = 0;
+				APILimiter.timeLeft = 60000;
+			} catch (InterruptedException e) {
+				SkyHead.LOGGER.error("API Limiter Error", e);
 			}
 		}
 	});

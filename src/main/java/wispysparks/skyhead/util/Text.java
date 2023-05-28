@@ -3,69 +3,45 @@ package wispysparks.skyhead.util;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+
 /**
  * Utility class used for creating ChatComponents with a color style added.
  */
 public class Text {
 	
-	public static ChatComponentText ChatText(String text, String colorCode) { // simplified code to create a colored chat component
-		EnumChatFormatting color = getColor(colorCode);
+	/**
+	 * @return a colored text component using the color code
+	 */
+	public static ChatComponentText ChatText(String text, String colorCode) {
 		ChatComponentText chatText = new ChatComponentText(text);
 		ChatStyle cs = new ChatStyle();
-		cs.setColor(color);
+		cs.setColor(getColor(colorCode));
 		chatText.setChatStyle(cs);
 		return chatText;
 	}
 	
-	private static EnumChatFormatting getColor(String color) { // function to get a chat formatted color from a color code
-		if (color == "§0") {
-			return EnumChatFormatting.BLACK;
+	private static EnumChatFormatting getColor(String color) { 
+		EnumChatFormatting format;
+		switch (color) {
+			case "§0": format = EnumChatFormatting.BLACK; break;
+			case "§1": format = EnumChatFormatting.DARK_BLUE; break;
+			case "§2": format = EnumChatFormatting.DARK_GREEN; break;
+			case "§3": format = EnumChatFormatting.DARK_AQUA; break;
+			case "§4": format = EnumChatFormatting.DARK_RED; break;
+			case "§5": format = EnumChatFormatting.DARK_PURPLE; break;
+			case "§6": format = EnumChatFormatting.GOLD; break;
+			case "§7": format = EnumChatFormatting.GRAY; break;
+			case "§8": format = EnumChatFormatting.DARK_GRAY; break;
+			case "§9": format = EnumChatFormatting.BLUE; break;
+			case "§a": format = EnumChatFormatting.GREEN; break;
+			case "§b": format = EnumChatFormatting.AQUA; break;
+			case "§c": format = EnumChatFormatting.RED; break;
+			case "§d": format = EnumChatFormatting.LIGHT_PURPLE; break;
+			case "§e": format = EnumChatFormatting.YELLOW; break;
+			case "§f": format = EnumChatFormatting.WHITE; break;
+			default: throw new IllegalArgumentException("Invalid Color Indentifier");
 		}
-		else if (color == "§1") {
-			return EnumChatFormatting.DARK_BLUE;
-		}
-		else if (color == "§2") {
-			return EnumChatFormatting.DARK_GREEN;
-		}
-		else if (color == "§3") {
-			return EnumChatFormatting.DARK_AQUA;
-		}
-		else if (color == "§4") {
-			return EnumChatFormatting.DARK_RED;
-		}
-		else if (color == "§5") {
-			return EnumChatFormatting.DARK_PURPLE;
-		}
-		else if (color == "§6") {
-			return EnumChatFormatting.GOLD;
-		}
-		else if (color == "§7") {
-			return EnumChatFormatting.GRAY;
-		}
-		else if (color == "§8") {
-			return EnumChatFormatting.DARK_GRAY;
-		}
-		else if (color == "§9") {
-			return EnumChatFormatting.BLUE;
-		}
-		else if (color == "§a") {
-			return EnumChatFormatting.GREEN;
-		}
-		else if (color == "§b") {
-			return EnumChatFormatting.AQUA;
-		}
-		else if (color == "§c") {
-			return EnumChatFormatting.RED;
-		}
-		else if (color == "§d") {
-			return EnumChatFormatting.LIGHT_PURPLE;
-		}
-		else if (color == "§e") {
-			return EnumChatFormatting.YELLOW;
-		}
-		else {
-			return EnumChatFormatting.WHITE;
-		}
+		return format;
 	}
 	
 }

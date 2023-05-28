@@ -2,8 +2,6 @@ package wispysparks.skyhead.events;
 
 import java.lang.reflect.Field;
 
-import org.apache.logging.log4j.Logger;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiPlayerTabOverlay;
 import net.minecraft.client.gui.ScaledResolution;
@@ -18,107 +16,107 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import wispysparks.skyhead.Cache;
+import wispysparks.skyhead.Config;
 import wispysparks.skyhead.SkyHead;
 import wispysparks.skyhead.gui.Display;
 import wispysparks.skyhead.gui.PlayerListGui;
 import wispysparks.skyhead.util.Text;
+
 /**
  * Events class where events are subscribed to and handled when fired.
  */
 public class Events {
 	
-	private final static Field header = ReflectionHelper.findField(GuiPlayerTabOverlay.class, new String[]{"field_175256_i", "header"});
-	private final static Field footer = ReflectionHelper.findField(GuiPlayerTabOverlay.class, new String[]{"field_175255_h", "footer"});
-	private final static Field time = ReflectionHelper.findField(GuiPlayerTabOverlay.class, new String[]{"field_175253_j", "lastTimeOpened"});
-	private PlayerListGui playerList = new PlayerListGui(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI);
-	private Logger logger = SkyHead.logger;
-    private Boolean checkedUpdate = false;
+	private static PlayerListGui playerList = new PlayerListGui(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI);
+	private static Field tabListHeader = ReflectionHelper.findField(GuiPlayerTabOverlay.class, new String[]{"field_175256_i", "header"});
+	private static Field tabListFooter = ReflectionHelper.findField(GuiPlayerTabOverlay.class, new String[]{"field_175255_h", "footer"});
+	private static Field tabListTime = ReflectionHelper.findField(GuiPlayerTabOverlay.class, new String[]{"field_175253_j", "lastTimeOpened"});
+    private static boolean checkedUpdate = false;
 
     @SubscribeEvent
-    public void onPlayerJoin(EntityJoinWorldEvent event) {
-        if (!SkyHead.allowedToSet()) return;
-        Display.setLevel(event.entity); // set level for the entity
+    public static void onPlayerJoin(EntityJoinWorldEvent event) {
+        if (!SkyHead.enabled()) return;
+        Display.setLevel(event.entity); 
     }
     
     @SubscribeEvent
-    public void nameFormat(PlayerEvent.NameFormat event) { // called when a players display name is changed
-        if (!SkyHead.allowedToSet()) return;
+    public static void nameFormat(PlayerEvent.NameFormat event) { // called when a players display name is changed
+        if (!SkyHead.enabled()) return;
 		String level = Cache.queryCache(event.username);
-    	event.displayname = event.displayname + level; // set a players display name to their name plus level
+    	event.displayname = event.displayname + level; 
     }
     
 	@SubscribeEvent
-	public void tabListRender(RenderGameOverlayEvent.Pre event) { // render event on tab list
-        if (!SkyHead.allowedToSet()) return;
-		if (event.type.equals(RenderGameOverlayEvent.ElementType.PLAYER_LIST) && SkyHead.tabEnabled) {
-			event.setCanceled(true); // cancel original tab rendering
+	public static void tabListRender(RenderGameOverlayEvent.Pre event) { 
+        if (!SkyHead.enabled()) return;
+		if (event.type.equals(RenderGameOverlayEvent.ElementType.PLAYER_LIST) && Config.isTabEnabled()) {
+			event.setCanceled(true); 
 			GuiPlayerTabOverlay tabList = Minecraft.getMinecraft().ingameGUI.getTabList();
-			Minecraft mc = Minecraft.getMinecraft();
 			try { // gather info from real tab list
-				playerList.header = (IChatComponent) header.get(tabList);
-				playerList.footer = (IChatComponent) footer.get(tabList);
-				playerList.lastTimeOpened = Long.valueOf(time.get(tabList).toString());
-			} catch (IllegalArgumentException e) {SkyHead.logger.error(e);} catch (IllegalAccessException e) {SkyHead.logger.error(e);} // render my own custom tab list
+				playerList.header = (IChatComponent) tabListHeader.get(tabList);
+				playerList.footer = (IChatComponent) tabListFooter.get(tabList);
+				playerList.lastTimeOpened = Long.valueOf(tabListTime.get(tabList).toString());
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+                SkyHead.LOGGER.error("Tab List Render Error", e);
+            }  
+			Minecraft mc = Minecraft.getMinecraft();
 			playerList.renderPlayerlist(new ScaledResolution(mc).getScaledWidth(), mc.theWorld.getScoreboard(), mc.theWorld.getScoreboard().getObjectiveInDisplaySlot(0));
 		}
 	}
     
 	@SubscribeEvent
-    public void onServerConnect(FMLNetworkEvent.ClientConnectedToServerEvent event) { // update checker to send messages and get result
+    public static void onServerConnect(FMLNetworkEvent.ClientConnectedToServerEvent event) { // update checker to send messages and get result
         if (checkedUpdate) return;
         checkedUpdate = true;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Boolean pending = true;
-                CheckResult result = null;
-                String message = "";
-                while (pending) {
-                    try {
-                        Thread.sleep(250);
-                    } catch (InterruptedException e) {
-                        logger.error(e);
-                    }
-                    result = ForgeVersion.getResult(Loader.instance().activeModContainer());
-                    switch (result.status) {
-                        case AHEAD: // I guess you're somehow ahead of the latest version but I don't know how that makes sense
-                            pending = false;
-                            break;
-                        case BETA: // you have latest unstable version
-                            pending = false;
-                            break;
-                        case BETA_OUTDATED:
-                            pending = false;
-                            break;
-                        case FAILED:
-                            pending = false;
-                            message = "SkyHead Update Checker: Could not access update.json.";
-                            break;
-                        case OUTDATED:
-                            pending = false;
-                            message = "SkyHead Update Checker: New stable version available for SkyHead.";
-                            break;
-                        case PENDING: // pending response
-                            break;
-                        case UP_TO_DATE: // you have latest stable version
-                            pending = false;
-                            break;
-                    }
+        new Thread(() -> {
+            boolean pending = true;
+            CheckResult result = null;
+            String message = "";
+            while (pending) {
+                try {
+                    Thread.sleep(250);
+                } catch (InterruptedException e) {
+                    SkyHead.LOGGER.error("Update Checker Error", e);
                 }
-                Boolean sentMessage = false;
-                while (!sentMessage) {
-                    try {
-                        Thread.sleep(250);
-                    } catch (InterruptedException e) {
-                        logger.error(e);
-                    }
-                    if (Minecraft.getMinecraft().thePlayer != null) {
-                        Minecraft.getMinecraft().thePlayer.addChatMessage(Text.ChatText(message, ""));
-                        sentMessage = true;
-                    }
+                result = ForgeVersion.getResult(Loader.instance().activeModContainer());
+                switch (result.status) {
+                    case AHEAD: 
+                        pending = false;
+                        break;
+                    case BETA: 
+                        pending = false;
+                        break;
+                    case BETA_OUTDATED:
+                        pending = false;
+                        break;
+                    case FAILED:
+                        pending = false;
+                        message = "SkyHead Update Checker: Could not access update.json.";
+                        break;
+                    case OUTDATED:
+                        pending = false;
+                        message = "SkyHead Update Checker: New stable version available for SkyHead.";
+                        break;
+                    case PENDING: 
+                        break;
+                    case UP_TO_DATE: 
+                        pending = false;
+                        break;
                 }
             }
-        }).start();;
+            boolean sentMessage = false;
+            while (!sentMessage) {
+                try {
+                    Thread.sleep(250);
+                } catch (InterruptedException e) {
+                    SkyHead.LOGGER.error("Update Checker Error", e);
+                }
+                if (Minecraft.getMinecraft().thePlayer != null) {
+                    Minecraft.getMinecraft().thePlayer.addChatMessage(Text.ChatText(message, ""));
+                    sentMessage = true;
+                }
+            }
+        }).start();
     }
 
 }
