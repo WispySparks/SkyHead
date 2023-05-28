@@ -22,7 +22,7 @@ public class SkyHead {
     private static final String SERVER_IP = "mc.hypixel.net";
     
     public SkyHead() {
-    	MinecraftForge.EVENT_BUS.register(Events.class); 
+    	MinecraftForge.EVENT_BUS.register(new Events()); 
         ClientCommandHandler.instance.registerCommand(new SkyheadCommands()); 
     }
 
