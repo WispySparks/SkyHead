@@ -18,7 +18,7 @@ public class Config {
     	File configFile = new File(Loader.instance().getConfigDir(), "SkyHead.cfg");
     	config = new Configuration(configFile);
     	config.load();
-    	modEnabled = config.get(Configuration.CATEGORY_CLIENT, "enabled", true); 
+    	modEnabled = config.get(Configuration.CATEGORY_CLIENT, "enabled", false); 
     	tabEnabled = config.get(Configuration.CATEGORY_CLIENT, "tabEnabled", false);
     	mode = config.get(Configuration.CATEGORY_CLIENT, "mode", 0); 
     	apiKey = config.get(Configuration.CATEGORY_CLIENT, "apiKey", ""); 

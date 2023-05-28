@@ -32,8 +32,8 @@ public class APILimiter {
 		while (true) { // every minute after initial time left set requests back to 0
 			try {
 				Thread.sleep(timeLeft);
-				APILimiter.requests = 0;
-				APILimiter.timeLeft = 60000;
+				requests = 0;
+				timeLeft = 60000;
 			} catch (InterruptedException e) {
 				SkyHead.LOGGER.error("SkyHead API Limiter Error", e);
 			}

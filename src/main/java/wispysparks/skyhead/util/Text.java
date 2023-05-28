@@ -5,7 +5,7 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
 /**
- * Utility class used for creating ChatComponents with a color style added.
+ * Utility class used for working with text and strings.
  */
 public class Text {
 	
@@ -42,6 +42,53 @@ public class Text {
 			default: format = EnumChatFormatting.WHITE; break;
 		}
 		return format;
+	}
+
+	public static String getFormattedBWLevel(String level) { 
+		String colorCode = "§7";
+		String assembledLevel = " " + colorCode + level.trim() + "✫";
+		boolean rainbow = false;
+		String rainbowLevel = "";
+    	int levelNum = Integer.parseInt(level);
+    	if (levelNum < 100) colorCode = "§7"; 
+    	else if (levelNum < 200) colorCode = "§f";
+    	else if (levelNum < 300) colorCode = "§6";
+    	else if (levelNum < 400) colorCode = "§b";
+    	else if (levelNum < 500) colorCode = "§2";
+    	else if (levelNum < 600) colorCode = "§3";
+    	else if (levelNum < 700) colorCode = "§4";
+    	else if (levelNum < 800) colorCode = "§d";
+    	else if (levelNum < 900) colorCode = "§9";
+    	else if (levelNum < 1000) colorCode = "§5";
+    	else {
+			rainbowLevel = toRainbowString(level + "✫");
+			rainbow = true;
+		}  
+		if (rainbow) {
+			assembledLevel = " " + rainbowLevel;
+		} 
+		else {
+			assembledLevel = " " + colorCode + level.trim() + "✫";
+		}
+		return assembledLevel;
+    }
+
+	private static String toRainbowString(String string) { 
+		String rainbowString = "";
+		String[] colorChar = {
+			EnumChatFormatting.RED.toString(),
+			EnumChatFormatting.GOLD.toString(),
+			EnumChatFormatting.YELLOW.toString(),
+			EnumChatFormatting.GREEN.toString(),
+			EnumChatFormatting.AQUA.toString(),
+			EnumChatFormatting.BLUE.toString(),
+			EnumChatFormatting.LIGHT_PURPLE.toString(),
+			EnumChatFormatting.DARK_PURPLE.toString()
+		};
+		for (int i = 0; i < string.length(); i++) {
+			rainbowString += colorChar[i%8] + string.charAt(i);
+		}
+		return rainbowString;
 	}
 	
 }

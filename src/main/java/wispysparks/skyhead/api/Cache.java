@@ -1,5 +1,6 @@
 package wispysparks.skyhead.api;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import wispysparks.skyhead.Config;
@@ -9,8 +10,8 @@ import wispysparks.skyhead.Config;
  */
 public class Cache { 
 	
-	private static ConcurrentHashMap<String, String> playerCacheSW = new ConcurrentHashMap<String, String>(); 
-	private static ConcurrentHashMap<String, String> playerCacheBW = new ConcurrentHashMap<String, String>(); 
+	private static Map<String, String> playerCacheSW = new ConcurrentHashMap<>(); 
+	private static Map<String, String> playerCacheBW = new ConcurrentHashMap<>(); 
 	
 	public static void addPlayer(String player, String level) { 
 		switch (Config.getMode()) {

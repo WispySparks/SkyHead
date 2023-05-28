@@ -36,11 +36,11 @@ public class Display {
     public static void setLevels() {
 		Minecraft mc = Minecraft.getMinecraft();
 		if (SkyHead.enabled()) {
-			for (EntityPlayer player : mc.theWorld.playerEntities) { // set the names of everyone in the lobby
+			for (EntityPlayer player : mc.theWorld.playerEntities) { 
 				setLevel(player);
 			}
 		} else {
-			for (EntityPlayer player : mc.theWorld.playerEntities) { // clear the names of everyone in the lobby
+			for (EntityPlayer player : mc.theWorld.playerEntities) {
 				player.refreshDisplayName();
 			}
 		}

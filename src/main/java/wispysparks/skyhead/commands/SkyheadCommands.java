@@ -15,6 +15,7 @@ import wispysparks.skyhead.api.APILimiter;
 import wispysparks.skyhead.api.Cache;
 import wispysparks.skyhead.gui.Display;
 import wispysparks.skyhead.util.Text;
+
 /** 
  * Class for handling player commands.
  */  
@@ -139,7 +140,7 @@ public class SkyheadCommands extends CommandBase {
 		}
 	}
 	
-	private String convertBool(Boolean bool, Boolean color) { // convert a boolean value to a color and a word
+	private String convertBool(boolean bool, boolean color) { 
 		if (color == false) {
 			if (bool == true) return "Enabled";
 			return "Disabled";
