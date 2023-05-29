@@ -1,9 +1,10 @@
 package wispysparks.skyhead.commands;
 
+import static wispysparks.skyhead.SkyHead.MC;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -15,6 +16,7 @@ import wispysparks.skyhead.api.APILimiter;
 import wispysparks.skyhead.api.Cache;
 import wispysparks.skyhead.gui.Display;
 import wispysparks.skyhead.util.Text;
+
 
 /** 
  * Class for handling player commands.
@@ -65,28 +67,27 @@ public class SkyheadCommands extends CommandBase {
 
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-		Minecraft mc = Minecraft.getMinecraft();
 		if (args.length > 0) {
 			if (args[0].equals("on")) { // turn mod on
 				Config.setEnabled(true);
 				Display.setLevels();
-				mc.thePlayer.addChatMessage(Text.ChatText("Skyhead ON", "§a"));
+				MC.thePlayer.addChatMessage(Text.ChatText("Skyhead ON", "§a"));
 			}
 			else if (args[0].equals("off")) { // turn mod off
 				Config.setEnabled(false);
 				Display.setLevels();
-				mc.thePlayer.addChatMessage(Text.ChatText("Skyhead OFF", "§c"));
+				MC.thePlayer.addChatMessage(Text.ChatText("Skyhead OFF", "§c"));
 			}
 			else if (args[0].equals("tab")) { // toggle tab levels on and off
 				Config.setTabEnabled(!Config.isTabEnabled());
-				mc.thePlayer.addChatMessage(Text.ChatText("Tab is now ", "§6")
+				MC.thePlayer.addChatMessage(Text.ChatText("Tab is now ", "§6")
 					.appendSibling(Text.ChatText(convertBool(Config.isTabEnabled(), false), convertBool(Config.isTabEnabled(), true))));
 			}
 			else if (args[0].equals("requests")) { // display number of requests this minute
-				mc.thePlayer.addChatMessage(Text.ChatText("Requests made this minute: " + APILimiter.getRequests(), "§6"));
+				MC.thePlayer.addChatMessage(Text.ChatText("Requests made this minute: " + APILimiter.getRequests(), "§6"));
 			}
 			else if (args[0].equals("size")) { // display cache size
-				mc.thePlayer.addChatMessage(Text.ChatText("Player Cache Size: " + Cache.getSize(), "§6"));
+				MC.thePlayer.addChatMessage(Text.ChatText("Player Cache Size: " + Cache.getSize(), "§6"));
 			}
 			else if (args[0].equals("mode")) { // change level modes
 				if (args.length > 1) {
@@ -97,41 +98,41 @@ public class SkyheadCommands extends CommandBase {
 						handleMode(Mode.BEDWARS);
 					}
 					else {
-						mc.thePlayer.addChatMessage(Text.ChatText("Invalid Mode, Valid Modes are sw and bw", "§6"));
+						MC.thePlayer.addChatMessage(Text.ChatText("Invalid Mode, Valid Modes are sw and bw", "§6"));
 					}
 				}
 				else {
-					mc.thePlayer.addChatMessage(Text.ChatText("Must Specify a Mode", "§6"));
+					MC.thePlayer.addChatMessage(Text.ChatText("Must Specify a Mode", "§6"));
 				}
 			}
 			else if (args[0].equals("key")) { // set api key
 				if (args.length > 1) {
 					Config.setAPIKey(args[1]);
 					Config.setEnabled(true);
-					mc.thePlayer.addChatMessage(Text.ChatText("Set API Key to " + args[1], "§6"));
+					MC.thePlayer.addChatMessage(Text.ChatText("Set API Key to " + args[1], "§6"));
 					Display.setLevels();
 				}
 				else {
-					mc.thePlayer.addChatMessage(Text.ChatText("Must Specify API Key", "§6"));
+					MC.thePlayer.addChatMessage(Text.ChatText("Must Specify API Key", "§6"));
 				}
 			}
 			else if (args[0].equals("help")) { // help command
-				mc.thePlayer.addChatMessage(Text.ChatText("Welcome to SkyHead. Here is an explanation of every command."
+				MC.thePlayer.addChatMessage(Text.ChatText("Welcome to SkyHead. Here is an explanation of every command."
 				+ " On and off will turn the whole mod on or off, tab will toggle showing levels in tab on and off, abbreviations are used to change the mode"
 				+ " such as sw or bw. Key is used to set the api key to be used by the mod, size tells you the current size of the players cached for"
 				+ " the mode you're currently in, and requests tells you how many requests have been sent to the api this minute.", "§6"));
 			}
 			else if (args[0].equals("clear")) { // clear player cache, unstable
 				Cache.clear();
-				mc.thePlayer.addChatMessage(Text.ChatText("Cleared Cache", "§6"));
+				MC.thePlayer.addChatMessage(Text.ChatText("Cleared Cache", "§6"));
 				Display.setLevels();
 			}
 			else { // if not a valid subcommand
-				mc.thePlayer.addChatMessage(Text.ChatText("Invalid Subcommand, " + subCommands, "§6"));
+				MC.thePlayer.addChatMessage(Text.ChatText("Invalid Subcommand, " + subCommands, "§6"));
 			}
 		}
 		else { // if no subcommand given
-			mc.thePlayer.addChatMessage(Text.ChatText("SkyHead is currently ", "§6")
+			MC.thePlayer.addChatMessage(Text.ChatText("SkyHead is currently ", "§6")
 				.appendSibling(Text.ChatText(convertBool(Config.isEnabled(), false), convertBool(Config.isEnabled(), true)))
 				.appendSibling(Text.ChatText(" with tab levels ", "§6"))
 				.appendSibling(Text.ChatText(convertBool(Config.isTabEnabled(), false), convertBool(Config.isTabEnabled(), true)))
@@ -150,10 +151,9 @@ public class SkyheadCommands extends CommandBase {
 	}
 	
 	private void handleMode(Mode mode) {
-		Minecraft mc = Minecraft.getMinecraft();
 		Config.setMode(mode);
 		Display.setLevels();
-		mc.thePlayer.addChatMessage(Text.ChatText("Set to " + mode.getName() + " Mode", "§6"));
+		MC.thePlayer.addChatMessage(Text.ChatText("Set to " + mode.getName() + " Mode", "§6"));
 	}
 
 }

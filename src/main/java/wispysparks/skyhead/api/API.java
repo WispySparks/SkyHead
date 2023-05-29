@@ -1,5 +1,7 @@
 package wispysparks.skyhead.api;
 
+import static wispysparks.skyhead.SkyHead.MC;
+
 import java.io.IOException;
 
 import org.apache.http.Header;
@@ -13,7 +15,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import net.minecraft.client.Minecraft;
 import wispysparks.skyhead.Config;
 import wispysparks.skyhead.SkyHead;
 import wispysparks.skyhead.util.Text;
@@ -68,7 +69,7 @@ public class API {
 					}
 				} else if (response.getStatusLine().getStatusCode() == 403) { // if unsuccessful invalid api key
 					Config.setEnabled(false);
-					Minecraft.getMinecraft().thePlayer.addChatMessage(Text.ChatText("Invalid API Key, Please Set a Correct Key", "§6"));
+					MC.thePlayer.addChatMessage(Text.ChatText("Invalid API Key, Please Set a Correct Key", "§6"));
 					return " §fbadkey";
 				} 
 				return ""; // no player found in hypixel api
@@ -76,7 +77,7 @@ public class API {
             return " §fLimit"; 
         }
 		Config.setEnabled(false);
-		Minecraft.getMinecraft().thePlayer.addChatMessage(Text.ChatText("No API Key Set", "§6"));
+		MC.thePlayer.addChatMessage(Text.ChatText("No API Key Set", "§6"));
         return ""; 
     }
     

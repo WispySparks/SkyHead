@@ -1,5 +1,7 @@
 package wispysparks.skyhead.gui;
 
+import static wispysparks.skyhead.SkyHead.MC;
+
 import java.lang.reflect.Field;
 
 import net.minecraft.client.Minecraft;
@@ -41,7 +43,8 @@ public class PlayerListGui extends GuiPlayerTabOverlay {
         }
     }
 
-    public void updateValues(GuiPlayerTabOverlay tabList) {
+    public void updateValues() {
+        GuiPlayerTabOverlay tabList = MC.ingameGUI.getTabList();
         try {
             setHeader((IChatComponent) HEADER.get(tabList));
             setFooter((IChatComponent) FOOTER.get(tabList));

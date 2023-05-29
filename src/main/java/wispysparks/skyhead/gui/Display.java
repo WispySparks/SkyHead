@@ -1,6 +1,7 @@
 package wispysparks.skyhead.gui;
 
-import net.minecraft.client.Minecraft;
+import static wispysparks.skyhead.SkyHead.MC;
+
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +21,6 @@ public class Display {
 			if (!Cache.contains(player.getName()) || result.equals(" §fLimit") || result.equals(" §fbadkey") || result.equals("")) { 
             	new Thread(() -> {
 					String level = API.getLevel(player.getUniqueID().toString()); 
-					System.out.println("SkyHead: " + player.getName() + level);
 					Cache.addPlayer(player.getName(), level);
 					player.refreshDisplayName(); 
 				}).start();
@@ -34,13 +34,12 @@ public class Display {
     }
 
     public static void setLevels() {
-		Minecraft mc = Minecraft.getMinecraft();
 		if (SkyHead.enabled()) {
-			for (EntityPlayer player : mc.theWorld.playerEntities) { 
+			for (EntityPlayer player : MC.theWorld.playerEntities) { 
 				setLevel(player);
 			}
 		} else {
-			for (EntityPlayer player : mc.theWorld.playerEntities) {
+			for (EntityPlayer player : MC.theWorld.playerEntities) {
 				player.refreshDisplayName();
 			}
 		}

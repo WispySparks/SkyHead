@@ -1,9 +1,8 @@
 package wispysparks.skyhead.events;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiPlayerTabOverlay;
+import static wispysparks.skyhead.SkyHead.MC;
+
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.ForgeVersion.CheckResult;
@@ -24,7 +23,7 @@ import wispysparks.skyhead.util.Text;
  */
 public class Events {
 	
-    private static final PlayerListGui playerList = new PlayerListGui(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI);
+    private static PlayerListGui playerList = new PlayerListGui(MC, MC.ingameGUI);
     private static boolean checkedUpdate = false;
 
     @SubscribeEvent
@@ -35,9 +34,7 @@ public class Events {
     
     @SubscribeEvent
     public void nameFormat(PlayerEvent.NameFormat event) { 
-        Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("SH: " + SkyHead.enabled()));
         if (!SkyHead.enabled()) return;
-        Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Name Format Event: " + event.displayname + Cache.query(event.username)));
         if (Cache.contains(event.username)) {
             String level = Cache.query(event.username);
             event.displayname = event.displayname + level; 
@@ -49,10 +46,8 @@ public class Events {
         if (!SkyHead.enabled()) return;
 		if (event.type.equals(RenderGameOverlayEvent.ElementType.PLAYER_LIST) && Config.isTabEnabled()) {
 			event.setCanceled(true); 
-			Minecraft mc = Minecraft.getMinecraft();
-			GuiPlayerTabOverlay tabList = mc.ingameGUI.getTabList();
-			playerList.updateValues(tabList);
-			playerList.renderPlayerlist(new ScaledResolution(mc).getScaledWidth(), mc.theWorld.getScoreboard(), mc.theWorld.getScoreboard().getObjectiveInDisplaySlot(0));
+			playerList.updateValues();
+			playerList.renderPlayerlist(new ScaledResolution(MC).getScaledWidth(), MC.theWorld.getScoreboard(), MC.theWorld.getScoreboard().getObjectiveInDisplaySlot(0));
 		}
 	}
     
@@ -102,8 +97,8 @@ public class Events {
                 } catch (InterruptedException e) {
                     SkyHead.LOGGER.error("SkyHead Update Checker Error", e);
                 }
-                if (Minecraft.getMinecraft().thePlayer != null) {
-                    Minecraft.getMinecraft().thePlayer.addChatMessage(Text.ChatText(message, ""));
+                if (MC.thePlayer != null) {
+                    MC.thePlayer.addChatMessage(Text.ChatText(message, ""));
                     sentMessage = true;
                 }
             }
