@@ -7,15 +7,15 @@ import wispysparks.skyhead.SkyHead;
  */ 
 public class APILimiter {
 	
-	public static final int MAX_REQUESTS = 110;
+	public static final int MAX_REQUESTS = 60;
 	private static int requests = 0; // number of requests made this minute
 	private static boolean started = false; 
 	private static int timeLeft; 
 	
 	public static void start(int timeLeftMilliseconds) { 
 		if (started == false) { 
-			APILimiter.timeLeft = timeLeftMilliseconds;
 			started = true;
+			timeLeft = timeLeftMilliseconds;
 			timer.start();
 		}
 	}

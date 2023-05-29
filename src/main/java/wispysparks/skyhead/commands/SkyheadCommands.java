@@ -68,12 +68,12 @@ public class SkyheadCommands extends CommandBase {
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) throws CommandException {
 		if (args.length > 0) {
-			if (args[0].equals("on")) { // turn mod on
+			if (args[0].equals("on")) { 
 				Config.setEnabled(true);
 				Display.setLevels();
 				MC.thePlayer.addChatMessage(Text.ChatText("Skyhead ON", "§a"));
 			}
-			else if (args[0].equals("off")) { // turn mod off
+			else if (args[0].equals("off")) {
 				Config.setEnabled(false);
 				Display.setLevels();
 				MC.thePlayer.addChatMessage(Text.ChatText("Skyhead OFF", "§c"));
@@ -89,7 +89,7 @@ public class SkyheadCommands extends CommandBase {
 			else if (args[0].equals("size")) { // display cache size
 				MC.thePlayer.addChatMessage(Text.ChatText("Player Cache Size: " + Cache.getSize(), "§6"));
 			}
-			else if (args[0].equals("mode")) { // change level modes
+			else if (args[0].equals("mode")) { 
 				if (args.length > 1) {
 					if (args[1].equals("sw")) {
 						handleMode(Mode.SKYWARS);
@@ -116,18 +116,12 @@ public class SkyheadCommands extends CommandBase {
 					MC.thePlayer.addChatMessage(Text.ChatText("Must Specify API Key", "§6"));
 				}
 			}
-			else if (args[0].equals("help")) { // help command
-				MC.thePlayer.addChatMessage(Text.ChatText("Welcome to SkyHead. Here is an explanation of every command."
-				+ " On and off will turn the whole mod on or off, tab will toggle showing levels in tab on and off, abbreviations are used to change the mode"
-				+ " such as sw or bw. Key is used to set the api key to be used by the mod, size tells you the current size of the players cached for"
-				+ " the mode you're currently in, and requests tells you how many requests have been sent to the api this minute.", "§6"));
-			}
-			else if (args[0].equals("clear")) { // clear player cache, unstable
+			else if (args[0].equals("clear")) { 
 				Cache.clear();
 				MC.thePlayer.addChatMessage(Text.ChatText("Cleared Cache", "§6"));
 				Display.setLevels();
 			}
-			else { // if not a valid subcommand
+			else { 
 				MC.thePlayer.addChatMessage(Text.ChatText("Invalid Subcommand, " + subCommands, "§6"));
 			}
 		}

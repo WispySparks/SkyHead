@@ -10,17 +10,18 @@ import wispysparks.skyhead.api.API;
 import wispysparks.skyhead.api.Cache;
 
 /**
- * This class is used to interact with the visible elements on the screen to set player names.
+ * This class is used for setting and refreshing player names with levels.
  */
 public class Display {
 	
     public static void setLevel(Entity entity) { 
-    	if (entity instanceof EntityOtherPlayerMP) { // make sure its a player and not local player
+    	if (entity instanceof EntityOtherPlayerMP) { 
 			final EntityOtherPlayerMP player = (EntityOtherPlayerMP) entity; 
-			String result = Cache.query(player.getName());
-			if (!Cache.contains(player.getName()) || result.equals(" §fLimit") || result.equals(" §fbadkey") || result.equals("")) { 
+			// String result = Cache.query(player.getName());
+			// || result.equals(" §fLimit") || result.equals(" §fbadkey") || result.equals("")
+			if (!Cache.contains(player.getName())) { 
             	new Thread(() -> {
-					String level = API.getLevel(player.getUniqueID().toString()); 
+					String level = API.getLevel(player.getUniqueID()); 
 					Cache.addPlayer(player.getName(), level);
 					player.refreshDisplayName(); 
 				}).start();
