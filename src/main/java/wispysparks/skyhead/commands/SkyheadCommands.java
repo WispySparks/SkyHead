@@ -91,14 +91,10 @@ public class SkyheadCommands extends CommandBase {
 			}
 			else if (args[0].equals("mode")) { 
 				if (args.length > 1) {
-					if (args[1].equals("sw")) {
-						handleMode(Mode.SKYWARS);
-					}
-					else if (args[1].equals("bw")) {
-						handleMode(Mode.BEDWARS);
-					}
-					else {
-						MC.thePlayer.addChatMessage(Text.ChatText("Invalid Mode, Valid Modes are sw and bw", "§6"));
+					switch (args[1]) {
+						case "sw": handleMode(Mode.SKYWARS); break;
+						case "bw": handleMode(Mode.BEDWARS); break;
+						default: MC.thePlayer.addChatMessage(Text.ChatText("Invalid Mode, Valid Modes are sw and bw", "§6"));
 					}
 				}
 				else {

@@ -17,9 +17,9 @@ public class Display {
     public static void setLevel(Entity entity) { 
     	if (entity instanceof EntityOtherPlayerMP) { 
 			final EntityOtherPlayerMP player = (EntityOtherPlayerMP) entity; 
-			// String result = Cache.query(player.getName());
-			// || result.equals(" §fLimit") || result.equals(" §fbadkey") || result.equals("")
-			if (!Cache.contains(player.getName())) { 
+			String result = Cache.query(player.getName());
+			// I want to try and get their level again if it failed before
+			if (!Cache.contains(player.getName()) || result.isEmpty() || result.equals(" §fLimit")) { 
             	new Thread(() -> {
 					String level = API.getLevel(player.getUniqueID()); 
 					Cache.addPlayer(player.getName(), level);
@@ -27,9 +27,7 @@ public class Display {
 				}).start();
 			}
 			else { 
-            	new Thread(() -> {
-					player.refreshDisplayName(); 
-				}).start();
+				player.refreshDisplayName(); 
 			}
 		}
     }

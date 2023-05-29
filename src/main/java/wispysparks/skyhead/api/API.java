@@ -37,7 +37,8 @@ public class API {
 			MC.thePlayer.addChatMessage(Text.ChatText("No API Key Set", "§6"));
 			return ""; 
         }
-		if (APILimiter.getRequests() < APILimiter.MAX_REQUESTS) {
+		int currentRequests = APILimiter.getRequests();
+		if (currentRequests < APILimiter.MAX_REQUESTS) {
 			HttpResponse response;
 			int statusCode = -1;
 			String body;
@@ -50,14 +51,17 @@ public class API {
 				if (headers.length > 0) {
 					APILimiter.start(Integer.parseInt(headers[0].getValue()) * 1000); // start clock with that time left
 				}
-				if (statusCode == 403) { 
+				if (statusCode == 403) { // Forbidden, invalid key
 					Config.setEnabled(false);
 					MC.thePlayer.addChatMessage(Text.ChatText("Invalid API Key, Please Set a Correct Key", "§6"));
 					return "";
 				} 
+				if (statusCode == 429) { // Request limit reached, technically this shouldn't happen because of the limiter
+					return " §fLimit"; 
+				}
 				body = new BasicResponseHandler().handleResponse(response);
 			} catch (IOException e) {
-				SkyHead.LOGGER.error("SkyHead API Error. Response Status Code: " + statusCode, e);
+				SkyHead.LOGGER.error("SkyHead API Error. Requests: " + currentRequests + ". Response Status Code: " + statusCode, e);
 				return "";
 			} 
 			if (body != null) { 

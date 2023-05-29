@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ServerData;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -33,7 +34,8 @@ public class SkyHead {
     }
     
     public static boolean enabled() {
-        return !MC.isSingleplayer() && MC.getCurrentServerData().serverIP.equals(SERVER_IP) && Config.isEnabled();
+        ServerData server = MC.getCurrentServerData();
+        return !MC.isSingleplayer() && server != null && server.serverIP.equals(SERVER_IP) && Config.isEnabled();
     }
 
 }
