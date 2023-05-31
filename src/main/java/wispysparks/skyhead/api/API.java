@@ -12,6 +12,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -65,11 +66,12 @@ public class API {
 				return "";
 			} 
 			if (body != null) { 
-				JsonObject json = new JsonParser().parse(body).getAsJsonObject();
-				if (json.get("player") != null) { 
+				JsonElement json = new JsonParser().parse(body).getAsJsonObject().get("player");
+				if (!json.isJsonNull()) { 
+					JsonObject playerJson = json.getAsJsonObject();
 					switch (Config.getMode()) { 
-						case SKYWARS: return getSkywarsLevel(json);
-						case BEDWARS: return getBedwarsLevel(json);
+						case SKYWARS: return getSkywarsLevel(playerJson);
+						case BEDWARS: return getBedwarsLevel(playerJson);
 						default: throw new IllegalArgumentException("Invalid Mode");
 					}
 				}
@@ -79,18 +81,25 @@ public class API {
 		return " §fLimit"; 
     }
 
-	private static String getSkywarsLevel(JsonObject json) {
-		if (json.get("player").getAsJsonObject().get("stats") == null || json.get("player").getAsJsonObject().get("stats").getAsJsonObject().get("SkyWars") == null || json.get("player").getAsJsonObject().get("stats").getAsJsonObject().get("SkyWars").getAsJsonObject().get("levelFormatted") == null) {
+	private static String getSkywarsLevel(JsonObject playerJson) {
+		if (
+			playerJson.get("stats") == null 
+			|| playerJson.get("stats").getAsJsonObject().get("SkyWars") == null 
+			|| playerJson.get("stats").getAsJsonObject().get("SkyWars").getAsJsonObject().get("levelFormatted") == null
+		) {
 			return " §71⋆"; 
 		}
-		return " " + json.get("player").getAsJsonObject().get("stats").getAsJsonObject().get("SkyWars").getAsJsonObject().get("levelFormatted").getAsString(); 
+		return " " + playerJson.get("stats").getAsJsonObject().get("SkyWars").getAsJsonObject().get("levelFormatted").getAsString(); 
 	}
 
-	private static String getBedwarsLevel(JsonObject json) {
-		if (json.get("player").getAsJsonObject().get("achievements") == null || json.get("player").getAsJsonObject().get("achievements").getAsJsonObject().get("bedwars_level") == null) {
+	private static String getBedwarsLevel(JsonObject playerJson) {
+		if (
+			playerJson.get("achievements") == null 
+			|| playerJson.get("achievements").getAsJsonObject().get("bedwars_level") == null
+		) {
 			return " §71✫";
 		}
-		String level = json.get("player").getAsJsonObject().get("achievements").getAsJsonObject().get("bedwars_level").getAsString();
+		String level = playerJson.get("achievements").getAsJsonObject().get("bedwars_level").getAsString();
 		return Text.getFormattedBWLevel(level); 
 	}
     
