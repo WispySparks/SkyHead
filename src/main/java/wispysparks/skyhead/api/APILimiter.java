@@ -4,11 +4,11 @@ import wispysparks.skyhead.SkyHead;
 import wispysparks.skyhead.gui.Display;
 
 /** 
- * Helper class to limit the API from going over the request limit of 120 a minute.
+ * Helper class to limit the API from going over the request limit of 60 a minute.
  */ 
 public class APILimiter {
 	
-	public static final int MAX_REQUESTS = 55;
+	public static final int MAX_REQUESTS = 60;
 	private static int requests = 0; // number of requests made this minute
 	private static boolean started = false; 
 	private static int timeLeft; 
