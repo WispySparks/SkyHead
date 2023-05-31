@@ -3,6 +3,7 @@ package wispysparks.skyhead.gui;
 import static wispysparks.skyhead.SkyHead.MC;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import wispysparks.skyhead.SkyHead;
@@ -33,12 +34,14 @@ public class Display {
     }
 
     public static void setLevels() {
+		WorldClient world = MC.theWorld;
+		if (world == null) return;
 		if (SkyHead.enabled()) {
-			for (EntityPlayer player : MC.theWorld.playerEntities) { 
+			for (EntityPlayer player : world.playerEntities) { 
 				setLevel(player);
 			}
 		} else {
-			for (EntityPlayer player : MC.theWorld.playerEntities) {
+			for (EntityPlayer player : world.playerEntities) {
 				player.refreshDisplayName();
 			}
 		}

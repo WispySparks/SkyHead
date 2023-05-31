@@ -66,7 +66,7 @@ public class API {
 			} 
 			if (body != null) { 
 				JsonObject json = new JsonParser().parse(body).getAsJsonObject();
-				if (!json.get("player").isJsonNull()) { 
+				if (json.get("player") != null) { 
 					switch (Config.getMode()) { 
 						case SKYWARS: return getSkywarsLevel(json);
 						case BEDWARS: return getBedwarsLevel(json);
@@ -80,14 +80,14 @@ public class API {
     }
 
 	private static String getSkywarsLevel(JsonObject json) {
-		if (json.get("player").getAsJsonObject().get("stats").getAsJsonObject().get("SkyWars").isJsonNull() || json.get("player").getAsJsonObject().get("stats").getAsJsonObject().get("SkyWars").getAsJsonObject().get("levelFormatted").isJsonNull()) {
+		if (json.get("player").getAsJsonObject().get("stats") == null || json.get("player").getAsJsonObject().get("stats").getAsJsonObject().get("SkyWars") == null || json.get("player").getAsJsonObject().get("stats").getAsJsonObject().get("SkyWars").getAsJsonObject().get("levelFormatted") == null) {
 			return " §71⋆"; 
 		}
 		return " " + json.get("player").getAsJsonObject().get("stats").getAsJsonObject().get("SkyWars").getAsJsonObject().get("levelFormatted").getAsString(); 
 	}
 
 	private static String getBedwarsLevel(JsonObject json) {
-		if (json.get("player").getAsJsonObject().get("achievements").isJsonNull() || json.get("player").getAsJsonObject().get("achievements").getAsJsonObject().get("bedwars_level").isJsonNull()) {
+		if (json.get("player").getAsJsonObject().get("achievements") == null || json.get("player").getAsJsonObject().get("achievements").getAsJsonObject().get("bedwars_level") == null) {
 			return " §71✫";
 		}
 		String level = json.get("player").getAsJsonObject().get("achievements").getAsJsonObject().get("bedwars_level").getAsString();

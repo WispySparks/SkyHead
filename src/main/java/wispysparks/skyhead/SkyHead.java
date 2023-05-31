@@ -35,7 +35,11 @@ public class SkyHead {
     
     public static boolean enabled() {
         ServerData server = MC.getCurrentServerData();
-        return !MC.isSingleplayer() && server != null && server.serverIP.equals(SERVER_IP) && Config.isEnabled();
+        return 
+            !MC.isSingleplayer() 
+            && server != null 
+            && server.serverIP.equals(SERVER_IP) 
+            && Config.isEnabled();
     }
 
 }
