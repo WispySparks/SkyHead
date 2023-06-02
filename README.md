@@ -18,13 +18,9 @@ This was built off of the recommended forge build for 1.8.9 and this mod is use 
 - `/sh requests` - Displays the number of requests made to the api this minute.
 - `/sh size` - Displays the size of the player cache for the current mode you're in.
 - `/sh key` - Used for setting your api key for the mod to use.
-- `/sh help` - Displays a text block to explain every command.
 ## Installation
 To install this mod simply grab the latest jar file from the releases tab on github and put it into your mods folder.
 You will need forge 1.8.9 installed which you can download from [here](https://files.minecraftforge.net/net/minecraftforge/forge/index_1.8.9.html).
-## Sidenote
-Rapidly changing the mode of what level to display when name changes are happening due to games starting and such can lead to problems.
-In general it should work but spamming the command can cause issues sometimes as players names/teams are changed. 
 ## Images
 ![2022-08-16_16 31 47](https://user-images.githubusercontent.com/101812473/184989339-faa9a65b-e894-40d6-b532-4ca70abd9bba.png)
 ![2022-08-16_16 33 01](https://user-images.githubusercontent.com/101812473/184989357-a69d7943-fbae-43c8-b1bb-7984da337177.png)

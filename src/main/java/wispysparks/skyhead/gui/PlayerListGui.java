@@ -32,15 +32,10 @@ public class PlayerListGui extends GuiPlayerTabOverlay {
                 return networkPlayerInfoIn.getDisplayName().getFormattedText() + " " + Cache.query(networkPlayerInfoIn.getGameProfile().getName());
             }
             else { 
-                return ScorePlayerTeam.formatPlayerName(networkPlayerInfoIn.getPlayerTeam(), networkPlayerInfoIn.getGameProfile().getName() + " " + Cache.query(networkPlayerInfoIn.getGameProfile().getName()));
+                return ScorePlayerTeam.formatPlayerName(networkPlayerInfoIn.getPlayerTeam(), networkPlayerInfoIn.getGameProfile().getName()) + " " + Cache.query(networkPlayerInfoIn.getGameProfile().getName());
             }
         }
-        else if (networkPlayerInfoIn.getDisplayName() != null) {
-            return networkPlayerInfoIn.getDisplayName().getFormattedText(); 
-        } 
-        else  {
-            return ScorePlayerTeam.formatPlayerName(networkPlayerInfoIn.getPlayerTeam(), networkPlayerInfoIn.getGameProfile().getName()); 
-        }
+        return networkPlayerInfoIn.getDisplayName() != null ? networkPlayerInfoIn.getDisplayName().getFormattedText() : ScorePlayerTeam.formatPlayerName(networkPlayerInfoIn.getPlayerTeam(), networkPlayerInfoIn.getGameProfile().getName());
     }
 
     public void updateValues() {
