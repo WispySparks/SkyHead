@@ -1,4 +1,5 @@
 # SkyHead
+### Due to recent Hypixel API changes as of 8/14/23 all old keys won't work and the mod is currently broken, sorry.
 ## General
 ![](https://img.shields.io/github/downloads/WispySparks/SkyHead/total?color=blue&label=Downloads)&nbsp;&nbsp;&nbsp;![](https://img.shields.io/github/v/release/WispySparks/SkyHead?sort=semver)
 
