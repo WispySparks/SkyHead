@@ -17,7 +17,7 @@ tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
-version = "1.6"
+version = "1.7"
 group= "wispysparks.skyhead" 
 archivesBaseName = "SkyHead"
 
@@ -50,9 +50,7 @@ processResources {
 }
 
 jar {
-    if (project.hasProperty("mcdir")) {
-        if (project.getProperty("mcdir").equals("true")) {
-            destinationDir = file("${System.properties['user.home']}/AppData/Roaming/.minecraftHypixel/mods")
-        }
+    if (project.hasProperty("out")) {
+        destinationDir = file(project.getProperty("out"))
     }
 }

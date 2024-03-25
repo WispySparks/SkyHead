@@ -12,7 +12,6 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
 import wispysparks.skyhead.Config;
 import wispysparks.skyhead.Config.Mode;
-import wispysparks.skyhead.api.APILimiter;
 import wispysparks.skyhead.api.Cache;
 import wispysparks.skyhead.gui.Display;
 import wispysparks.skyhead.util.Text;
@@ -25,7 +24,7 @@ public class SkyheadCommands extends CommandBase {
 	
 	private final List<String> aliases = new ArrayList<>(); 
 	private final List<String> tabComplete = new ArrayList<>(); 
-	private final String subCommands = "<on:off:tab:mode:key:requests:size:clear>"; 
+	private final String subCommands = "<on:off:tab:mode:size:clear>"; 
 	
 	public SkyheadCommands() { 
         aliases.add("sh"); 
@@ -33,8 +32,6 @@ public class SkyheadCommands extends CommandBase {
         tabComplete.add("off");
         tabComplete.add("tab");
         tabComplete.add("mode");
-        tabComplete.add("key");
-        tabComplete.add("requests");
         tabComplete.add("size");
 		tabComplete.add("clear");
 	}
@@ -83,9 +80,6 @@ public class SkyheadCommands extends CommandBase {
 				MC.thePlayer.addChatMessage(Text.ChatText("Tab is now ", "§6")
 					.appendSibling(Text.ChatText(convertBool(Config.isTabEnabled(), false), convertBool(Config.isTabEnabled(), true))));
 			}
-			else if (args[0].equals("requests")) { // display number of requests this minute
-				MC.thePlayer.addChatMessage(Text.ChatText("Requests made this minute: " + APILimiter.getRequests(), "§6"));
-			}
 			else if (args[0].equals("size")) { // display cache size
 				MC.thePlayer.addChatMessage(Text.ChatText("Player Cache Size: " + Cache.getSize(), "§6"));
 			}
@@ -99,17 +93,6 @@ public class SkyheadCommands extends CommandBase {
 				}
 				else {
 					MC.thePlayer.addChatMessage(Text.ChatText("Must Specify a Mode", "§6"));
-				}
-			}
-			else if (args[0].equals("key")) { // set api key
-				if (args.length > 1) {
-					Config.setAPIKey(args[1]);
-					Config.setEnabled(true);
-					MC.thePlayer.addChatMessage(Text.ChatText("Set API Key to " + args[1], "§6"));
-					Display.setLevels();
-				}
-				else {
-					MC.thePlayer.addChatMessage(Text.ChatText("Must Specify API Key", "§6"));
 				}
 			}
 			else if (args[0].equals("clear")) { 

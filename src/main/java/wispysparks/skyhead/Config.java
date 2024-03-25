@@ -12,7 +12,6 @@ public class Config {
     private static Property modEnabled; 
     private static Property tabEnabled; 
     private static Property mode; 
-    private static Property apiKey; 
     
     public static void loadConfig() { 
     	File configFile = new File(Loader.instance().getConfigDir(), "SkyHead.cfg");
@@ -21,7 +20,6 @@ public class Config {
     	modEnabled = config.get(Configuration.CATEGORY_CLIENT, "enabled", false); 
     	tabEnabled = config.get(Configuration.CATEGORY_CLIENT, "tabEnabled", false);
     	mode = config.get(Configuration.CATEGORY_CLIENT, "mode", 0); 
-    	apiKey = config.get(Configuration.CATEGORY_CLIENT, "apiKey", ""); 
     }
 
     public static boolean isEnabled() {
@@ -48,15 +46,6 @@ public class Config {
 
     public static void setMode(Mode m) {
         mode.set(m.getIndex());
-    }
-
-    public static String getAPIKey() {
-        return apiKey.getString();
-    }
-
-    public static void setAPIKey(String key) {
-        apiKey.set(key);
-        config.save();
     }
 
     public enum Mode {

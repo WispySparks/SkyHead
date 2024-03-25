@@ -1,10 +1,11 @@
 {
     "homepage": "https://github.com/WispySparks/SkyHead/releases",
     "promos": {
-      "1.8.9-latest"     : "1.6",
-      "1.8.9-recommended" : "1.6"
+      "1.8.9-latest"     : "1.7",
+      "1.8.9-recommended" : "1.7"
     },
     "1.8.9" : {
+      "1.7": "Made the mod functional again! Uses Cloudflare Workers to make requests to the API.",
       "1.6": "Refactored and rewrote most of the mod, more stable and bugs fixed.",
       "1.5.1" : "Fixed some bugs with the apitimer and display names.",
       "1.5" : "Made bedwars levels over 1000 actually be rainbows, made mode changing a subcommand. Made the custom tablist be below a bossbar.",

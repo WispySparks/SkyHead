@@ -16,9 +16,7 @@ This was built off of the recommended forge build for 1.8.9 and this mod is use 
 - `/sh tab` - Toggles tab levels on and off.
 - `/sh mode sw` - Changes displayed levels to Skywars.
 - `/sh mode bw` - Changes displayed levels to Bedwars.
-- `/sh requests` - Displays the number of requests made to the api this minute.
 - `/sh size` - Displays the size of the player cache for the current mode you're in.
-- `/sh key` - Used for setting your api key for the mod to use.
 ## Installation
 To install this mod simply grab the latest jar file from the releases tab on github and put it into your mods folder.
 You will need forge 1.8.9 installed which you can download from [here](https://files.minecraftforge.net/net/minecraftforge/forge/index_1.8.9.html).
